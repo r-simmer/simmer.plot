@@ -1,0 +1,6 @@
+library(testthat)
+library(simmer)
+library(simmer.plot)
+test_check("simmer.plot")
+detach("package:simmer.plot", unload = TRUE)
+detach("package:simmer", unload = TRUE)

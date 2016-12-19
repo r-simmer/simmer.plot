@@ -1,0 +1,3 @@
+plot.simmer.trajectory <- function() {
+
+}
