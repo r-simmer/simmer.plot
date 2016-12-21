@@ -1,23 +1,30 @@
 #' Plot methods for arrivals
 #'
 #' Plot the evolution of arrival related times:
-#' - activity time
-#' - waiting time
-#' - flow time
+#' \itemize{
+#'   \item activity time.
+#'   \item waiting time.
+#'   \item flow time.
+#' }
 #'
+#' @usage plot(x, "arrivals", metric = c("activity_time", "waiting_time", "flow_time"), ...)
 #' @inheritParams plot.simmer
 #' @param metric one of \code{c("activity_time", "waiting_time", "flow_time")}.
+#' @param ... no further arguments at the moment.
 #'
 #' @return Returns a ggplot2 object.
-#' @export
+#' @seealso \code{\link{plot.simmer}}.
 plot_arrivals <- function(x, metric=c("activity_time", "waiting_time", "flow_time"), ...) {
   metric <- match.arg(metric)
+
   monitor_data <- get_mon_arrivals(x)
   if (nrow(monitor_data) == 0)
     stop("no data available")
+
   monitor_data <- monitor_data %>%
     dplyr::mutate_(flow_time = ~end_time - start_time,
                    waiting_time = ~flow_time - activity_time)
+
   dispatch_next(metric, monitor_data, ...)
 }
 

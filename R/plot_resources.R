@@ -1,35 +1,48 @@
 #' Plot methods for resources
 #'
-#' Plot
-#' - the usage of a resource over the simulation time frame.
-#' - the utilization of specified resources in the simulation.
+#' Plot:
+#' \itemize{
+#'   \item the usage of a resource over the simulation time frame.
+#'   \item the utilization of specified resources in the simulation.
+#' }
 #'
+#' @usage plot(x, "resources", metric = c("usage", "utilization"), names, ...)
 #' @inheritParams plot.simmer
-#' @param names the name of the resource (character vector).
-#'
+#' @param metric one of \code{c("usage", "utilization")}.
+#' @param names the name of the resource(s) (a single string or a character vector) to show.
+#' @param ... further arguments for each kind of plot:
+#' \describe{
+#'   \item{\code{metric = "usage"}}{
+#'     \describe{
+#'       \item{\code{items}}{the components of the resource to be plotted.}
+#'       \item{\code{steps}}{adds the changes in the resource usage.}
+#'     }
+#'   }
+#' }
 #'
 #' @return Returns a ggplot2 object.
-#' @seealso \code{\link{plot_resource_utilization}},
-#' \code{\link{plot_evolution_arrival_times}}, \code{\link{plot_attributes}}.
-#' @export
+#' @seealso \code{\link{plot.simmer}}.
 plot_resources <- function(x, metric=c("usage", "utilization"), names, ...) {
-  dispatch_next(metric, ...)
+  metric <- match.arg(metric)
+
+  monitor_data <- get_mon_resources(x, data = c("counts", "limits")) %>%
+    dplyr::filter_(~resource %in% names)
+  if (nrow(monitor_data) == 0)
+    stop("no data available")
+
+  dispatch_next(metric, monitor_data, ...)
 }
 
-#' @param items the components of the resource to be plotted.
-#' @param steps adds the changes in the resource usage.
-#' @rdname plot_resources
-plot_resources_usage <- function(x, names, items=c("system", "queue", "server"), steps=FALSE) {
+plot_resources_usage <- function(monitor_data, items=c("system", "queue", "server"), steps=FALSE) {
   items <- match.arg(items, several.ok = TRUE)
 
-  limits <- get_mon_resources(x, data = "limits") %>%
-    dplyr::filter_(~resource %in% names) %>%
+  limits <- monitor_data %>%
+    dplyr::mutate_(server = ~capacity, queue = ~queue_size, system = ~limit) %>%
     tidyr::gather_("item", "value", c("server", "queue", "system")) %>%
     dplyr::mutate_(item = ~factor(item)) %>%
     dplyr::filter_(~item %in% items)
 
-  monitor_data <- get_mon_resources(x, data = "counts") %>%
-    dplyr::filter_(~resource %in% names) %>%
+  monitor_data <- monitor_data %>%
     tidyr::gather_("item", "value", c("server", "queue", "system")) %>%
     dplyr::mutate_(item = ~factor(item)) %>%
     dplyr::filter_(~item %in% items) %>%
@@ -37,15 +50,12 @@ plot_resources_usage <- function(x, names, items=c("system", "queue", "server"),
     dplyr::mutate_(mean = ~c(0, cumsum(utils::head(value, -1) * diff(time))) / time) %>%
     dplyr::ungroup()
 
-  if (is.list(x)) env <- x[[1]]
-  else env <- x
-
   plot_obj <-
-    ggplot(monitor_data) +
-    aes_(x = ~time, color = ~item) +
+    ggplot(monitor_data, aes_(x = ~time, color = ~item)) +
+    facet_grid(~resource) +
     geom_line(aes_(y = ~mean, group = ~interaction(replication, item))) +
     geom_step(aes_(y = ~value, group = ~interaction(replication, item)), limits, lty = 2) +
-    ggtitle(paste("Resource usage:", names)) +
+    ggtitle(paste("Resource usage")) +
     ylab("in use") +
     xlab("time") +
     expand_limits(y = 0)
@@ -58,18 +68,12 @@ plot_resources_usage <- function(x, names, items=c("system", "queue", "server"),
   plot_obj
 }
 
-#' @rdname plot_resources
-plot_resources_utilization <- function(x, names) {
-  if (is.list(x)) env <- x[[1]]
-  else env <- x
-
-  monitor_data <- x %>% get_mon_resources(data = "counts") %>%
-    dplyr::filter_(~resource %in% names) %>%
+plot_resources_utilization <- function(monitor_data) {
+  monitor_data <- monitor_data %>%
     tidyr::gather_("item", "value", c("server", "queue", "system")) %>%
     dplyr::mutate_(item = ~factor(item)) %>%
     dplyr::filter_(~item == "server") %>%
     dplyr::group_by_(~resource) %>%
-    dplyr::mutate_(capacity = ~get_capacity(env, resource[[1]])) %>%
     dplyr::group_by_(~replication) %>%
     dplyr::mutate_(runtime = "max(time)") %>%
     dplyr::group_by_(~resource, ~replication, ~capacity, ~runtime) %>%

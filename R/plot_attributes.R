@@ -2,19 +2,21 @@
 #'
 #' Plot the evolution of attributes.
 #'
+#' @usage plot(x, "attributes", metric = NULL, ...)
 #' @inheritParams plot.simmer
+#' @param metric no metrics at the moment.
 #' @param keys the keys of attributes you want to plot (if left empty, all attributes are shown).
+#' @param ... no further arguments at the moment.
 #'
 #' @return Returns a ggplot2 object.
-#' @export
+#' @seealso \code{\link{plot.simmer}}.
 plot_attributes <- function(x, metric=NULL, keys=c(), ...) {
   monitor_data <- get_mon_attributes(x)
-  if (nrow(monitor_data) == 0)
-    stop("no data available")
-
   if (length(keys) > 0)
     monitor_data <- monitor_data %>%
       dplyr::filter_(~key %in% keys)
+  if (nrow(monitor_data) == 0)
+    stop("no data available")
 
   plot_obj <-
     ggplot(monitor_data) +
