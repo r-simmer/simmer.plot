@@ -2,10 +2,9 @@
 
 S3method(plot,simmer)
 S3method(plot,trajectory)
+export(plot_arrivals)
 export(plot_attributes)
-export(plot_evolution_arrival_times)
-export(plot_resource_usage)
-export(plot_resource_utilization)
+export(plot_resources)
 import(ggplot2)
 import(simmer)
 importFrom(graphics,plot)

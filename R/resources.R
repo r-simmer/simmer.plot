@@ -1,27 +1,35 @@
-#' Plot usage of a resource over time
+#' Plot methods for resources
 #'
-#' Plot the usage of a resource over the simulation time frame.
+#' Plot
+#' - the usage of a resource over the simulation time frame.
+#' - the utilization of specified resources in the simulation.
 #'
-#' @param envs a single simmer environment or a list of environments representing several replications.
-#' @param resource_name the name of the resource (character value).
-#' @param items the components of the resource to be plotted.
-#' @param steps adds the changes in the resource usage.
+#' @inheritParams plot.simmer
+#' @param names the name of the resource (character vector).
+#'
 #'
 #' @return Returns a ggplot2 object.
 #' @seealso \code{\link{plot_resource_utilization}},
 #' \code{\link{plot_evolution_arrival_times}}, \code{\link{plot_attributes}}.
 #' @export
-plot_resource_usage <- function(envs, resource_name, items=c("system", "queue", "server"), steps = FALSE) {
+plot_resources <- function(x, metric=c("usage", "utilization"), names, ...) {
+  dispatch_next(metric, ...)
+}
+
+#' @param items the components of the resource to be plotted.
+#' @param steps adds the changes in the resource usage.
+#' @rdname plot_resources
+plot_resources_usage <- function(x, names, items=c("system", "queue", "server"), steps=FALSE) {
   items <- match.arg(items, several.ok = TRUE)
 
-  limits <- envs %>% get_mon_resources(data = "limits") %>%
-    dplyr::filter_(~resource == resource_name) %>%
+  limits <- get_mon_resources(x, data = "limits") %>%
+    dplyr::filter_(~resource %in% names) %>%
     tidyr::gather_("item", "value", c("server", "queue", "system")) %>%
     dplyr::mutate_(item = ~factor(item)) %>%
     dplyr::filter_(~item %in% items)
 
-  monitor_data <- envs %>% get_mon_resources(data = "counts") %>%
-    dplyr::filter_(~resource == resource_name) %>%
+  monitor_data <- get_mon_resources(x, data = "counts") %>%
+    dplyr::filter_(~resource %in% names) %>%
     tidyr::gather_("item", "value", c("server", "queue", "system")) %>%
     dplyr::mutate_(item = ~factor(item)) %>%
     dplyr::filter_(~item %in% items) %>%
@@ -29,15 +37,15 @@ plot_resource_usage <- function(envs, resource_name, items=c("system", "queue", 
     dplyr::mutate_(mean = ~c(0, cumsum(utils::head(value, -1) * diff(time))) / time) %>%
     dplyr::ungroup()
 
-  if (is.list(envs)) env <- envs[[1]]
-  else env <- envs
+  if (is.list(x)) env <- x[[1]]
+  else env <- x
 
   plot_obj <-
     ggplot(monitor_data) +
     aes_(x = ~time, color = ~item) +
     geom_line(aes_(y = ~mean, group = ~interaction(replication, item))) +
     geom_step(aes_(y = ~value, group = ~interaction(replication, item)), limits, lty = 2) +
-    ggtitle(paste("Resource usage:", resource_name)) +
+    ggtitle(paste("Resource usage:", names)) +
     ylab("in use") +
     xlab("time") +
     expand_limits(y = 0)
@@ -50,23 +58,13 @@ plot_resource_usage <- function(envs, resource_name, items=c("system", "queue", 
   plot_obj
 }
 
-#' Plot utilization of resources
-#'
-#' Plot the utilization of specified resources in the simulation.
-#'
-#' @inheritParams plot_resource_usage
-#' @param resources a character vector with at least one resource specified - e.g. "c('res1','res2')".
-#'
-#' @return Returns a ggplot2 object.
-#' @seealso \code{\link{plot_resource_usage}},
-#' \code{\link{plot_evolution_arrival_times}}, \code{\link{plot_attributes}}.
-#' @export
-plot_resource_utilization <- function(envs, resources) {
-  if (is.list(envs)) env <- envs[[1]]
-  else env <- envs
+#' @rdname plot_resources
+plot_resources_utilization <- function(x, names) {
+  if (is.list(x)) env <- x[[1]]
+  else env <- x
 
-  monitor_data <- envs %>% get_mon_resources(data = "counts") %>%
-    dplyr::filter_(~resource %in% resources) %>%
+  monitor_data <- x %>% get_mon_resources(data = "counts") %>%
+    dplyr::filter_(~resource %in% names) %>%
     tidyr::gather_("item", "value", c("server", "queue", "system")) %>%
     dplyr::mutate_(item = ~factor(item)) %>%
     dplyr::filter_(~item == "server") %>%

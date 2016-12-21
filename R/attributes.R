@@ -1,16 +1,16 @@
-#' Plot evolution of attribute data
+#' Plot methods for attributes
 #'
-#' Plot the evolution of user-supplied attribute data.
+#' Plot the evolution of attributes.
 #'
-#' @inheritParams plot_resource_usage
+#' @inheritParams plot.simmer
 #' @param keys the keys of attributes you want to plot (if left empty, all attributes are shown).
 #'
 #' @return Returns a ggplot2 object.
-#' @seealso \code{\link{plot_resource_usage}}, \code{\link{plot_resource_utilization}},
-#' \code{\link{plot_evolution_arrival_times}}.
 #' @export
-plot_attributes <- function(envs, keys=c()) {
-  monitor_data <- envs %>% get_mon_attributes()
+plot_attributes <- function(x, metric=NULL, keys=c(), ...) {
+  monitor_data <- get_mon_attributes(x)
+  if (nrow(monitor_data) == 0)
+    stop("no data available")
 
   if (length(keys) > 0)
     monitor_data <- monitor_data %>%
