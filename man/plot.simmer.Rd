@@ -10,14 +10,50 @@
 \arguments{
 \item{x}{a single simmer environment or a list of environments representing several replications.}
 
-\item{what}{type of plot: arrivals, attributes or resources.}
+\item{what}{type of plot, one of \code{c("resources", "arrivals", "attributes")}.}
 
-\item{metric}{specific metric. See \code{\link{plot_resources}}, \code{\link{plot_arrivals}} and
-\code{\link{plot_attributes}} for more details.}
+\item{metric}{specific metric for each type of plot.
+\describe{
+  \item{\code{what = "resources"}}{one of \code{c("usage", "utilization")}.}
+  \item{\code{what = "arrivals"}}{one of \code{c("activity_time", "waiting_time", "flow_time")}.}
+  \item{\code{what = "attributes"}}{no metrics at the moment.}
+}}
 
-\item{...}{further arguments for each kind of plot.}
+\item{...}{further arguments for each kind of plot.
+\describe{
+  \item{\code{what = "resources"}}{\describe{
+    \item{all metrics}{\describe{
+      \item{\code{names}}{the name of the resource(s) (a single string or a character
+      vector) to show.}
+    }}
+    \item{\code{metric = "usage"}}{\describe{
+      \item{\code{items}}{the components of the resource to be plotted, one or more
+      of \code{c("system", "queue", "server")}.}
+      \item{\code{steps}}{adds the changes in the resource usage.}
+    }}
+  }}
+  \item{\code{what = "attributes"}}{\describe{
+    \item{keys}{the keys of attributes you want to plot (if left empty, all attributes are shown).}
+  }}
+}}
+}
+\value{
+Returns a ggplot2 object.
 }
 \description{
-A method for the \code{\link{plot}} generic.
+A method for the \code{\link{plot}} generic. There are three kinds of plots with different
+metrics available:
+\itemize{
+  \item Plot of resources. Two metrics available: \itemize{
+    \item the usage of a resource over the simulation time frame.
+    \item the utilization of specified resources in the simulation.
+  }
+  \item Plot of arrivals. Three metrics available: \itemize{
+    \item activity time.
+    \item waiting time.
+    \item flow time.
+  }
+  \item Plot of attributes.
+}
 }
 

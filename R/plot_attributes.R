@@ -1,15 +1,3 @@
-#' Plot methods for attributes
-#'
-#' Plot the evolution of attributes.
-#'
-#' @usage plot(x, "attributes", metric = NULL, ...)
-#' @inheritParams plot.simmer
-#' @param metric no metrics at the moment.
-#' @param keys the keys of attributes you want to plot (if left empty, all attributes are shown).
-#' @param ... no further arguments at the moment.
-#'
-#' @return Returns a ggplot2 object.
-#' @seealso \code{\link{plot.simmer}}.
 plot_attributes <- function(x, metric=NULL, keys=c(), ...) {
   monitor_data <- get_mon_attributes(x)
   if (length(keys) > 0)

@@ -1,27 +1,3 @@
-#' Plot methods for resources
-#'
-#' Plot:
-#' \itemize{
-#'   \item the usage of a resource over the simulation time frame.
-#'   \item the utilization of specified resources in the simulation.
-#' }
-#'
-#' @usage plot(x, "resources", metric = c("usage", "utilization"), names, ...)
-#' @inheritParams plot.simmer
-#' @param metric one of \code{c("usage", "utilization")}.
-#' @param names the name of the resource(s) (a single string or a character vector) to show.
-#' @param ... further arguments for each kind of plot:
-#' \describe{
-#'   \item{\code{metric = "usage"}}{
-#'     \describe{
-#'       \item{\code{items}}{the components of the resource to be plotted.}
-#'       \item{\code{steps}}{adds the changes in the resource usage.}
-#'     }
-#'   }
-#' }
-#'
-#' @return Returns a ggplot2 object.
-#' @seealso \code{\link{plot.simmer}}.
 plot_resources <- function(x, metric=c("usage", "utilization"), names, ...) {
   metric <- match.arg(metric)
 

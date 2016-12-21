@@ -1,19 +1,3 @@
-#' Plot methods for arrivals
-#'
-#' Plot the evolution of arrival related times:
-#' \itemize{
-#'   \item activity time.
-#'   \item waiting time.
-#'   \item flow time.
-#' }
-#'
-#' @usage plot(x, "arrivals", metric = c("activity_time", "waiting_time", "flow_time"), ...)
-#' @inheritParams plot.simmer
-#' @param metric one of \code{c("activity_time", "waiting_time", "flow_time")}.
-#' @param ... no further arguments at the moment.
-#'
-#' @return Returns a ggplot2 object.
-#' @seealso \code{\link{plot.simmer}}.
 plot_arrivals <- function(x, metric=c("activity_time", "waiting_time", "flow_time"), ...) {
   metric <- match.arg(metric)
 
