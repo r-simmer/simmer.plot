@@ -2,6 +2,7 @@
 
 S3method(plot,list)
 S3method(plot,simmer)
+S3method(plot,trajectory)
 S3method(plot,wrap)
 import(ggplot2)
 import(simmer)
