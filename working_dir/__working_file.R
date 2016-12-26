@@ -1,26 +1,31 @@
-library(simmer)
+library(simmer.plot)
 
-t0 <- trajectory() %>%
-  seize("nurse", 1) %>%
+x <- trajectory() %>%
+  seize("resource", 1) %>%
   timeout(function() rnorm(1, 15)) %>%
-  release("nurse", 1) %>%
-  branch(function() 1, c(T, F),
+  release("resource", 1) %>%
+  branch(function() 1, c(TRUE, FALSE),
          trajectory() %>%
-           seize("doctor", function() 1) %>%
-           timeout(function() rnorm(1, 20)) %>%
-           release("doctor", function() 1) %>%
-           branch(function() 1, TRUE,
-                  trajectory() %>%
-                    seize("administration", 1) %>%
-                    timeout(1) %>%
-                    release("administration", 1)),
+           clone(2,
+                 trajectory() %>%
+                   seize("resource", 1) %>%
+                   timeout(1) %>%
+                   release("resource", 1),
+                 trajectory() %>%
+                   trap("signal",
+                        handler=trajectory() %>%
+                          timeout(1)) %>%
+                   timeout(1)),
          trajectory() %>%
-           rollback(1) %>%
-           rollback(1, check = function() FALSE) %>%
            set_attribute("dummy", 1) %>%
-           set_attribute("dummy", function() 1)) %>%
-  timeout(1)
+           set_attribute("dummy", function() 1) %>%
+           seize("resource", function() 1) %>%
+           timeout(function() rnorm(1, 20)) %>%
+           release("resource", function() 1) %>%
+           rollback(9)) %>%
+  timeout(1) %>%
+  rollback(2)
 
 ########################################################
 
-plot(t0)
+plot(x)
