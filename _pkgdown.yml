@@ -1,0 +1,30 @@
+templates:
+  params:
+    bootswatch: yeti
+
+reference:
+  - title: "Plot simmer objects"
+    desc: "S3 methods for simmer classes"
+    contents:
+      - plot.simmer
+      - plot.trajectory
+
+navbar:
+  title: simmer.plot
+  left:
+  - text: "Home"
+    icon: fa-home
+    href: http://r-simmer.org
+  - text: "Reference"
+    icon: fa-gears
+    href: reference/index.html
+  - text: "Articles"
+    icon: fa-graduation-cap
+    menu:
+      - text: "Plotting simmer statistics"
+        href: articles/plot.simmer.html
+      - text: "Plotting simmer trajectories"
+        href: articles/plot.trajectory.html
+  - text: "News"
+    icon: fa-newspaper-o
+    href: news/index.html

@@ -12,3 +12,4 @@ working_dir
 .git
 .lintr
 ^docs$
+^\.docs$
