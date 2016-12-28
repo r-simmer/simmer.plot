@@ -1,7 +1,7 @@
 Package: simmer.plot
 Type: Package
 Title: Plotting Methods for 'simmer'
-Version: 0.1.1
+Version: 0.1.1.9000
 Authors@R: c(
     person("Iñaki", "Ucar", email="i.ucar86@gmail.com", role=c("aut", "cph", "cre")),
     person("Bart", "Smeets", email="bartsmeets86@gmail.com", role=c("aut", "cph")))
