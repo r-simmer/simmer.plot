@@ -16,3 +16,8 @@ env:
 
 after_success:
   - Rscript -e 'covr::codecov()'
+
+before_script:
+  - mkdir .docs/extensions/plot
+after_script:
+  - rm -rf .docs/extensions
