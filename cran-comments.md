@@ -1,6 +1,6 @@
-## First CRAN submission
+## Resubmission
 
-This package detaches plotting functionalities from the 'simmer' package (that are already deprecated and will be eventually removed there) in order to minimise non-essential dependencies. It also implements a new visualisation tool not present in 'simmer'.
+CRAN URL fixed.
 
 ## Test environments
 

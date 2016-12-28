@@ -1,4 +1,4 @@
-# simmer.plot 0.1.0
+# simmer.plot 0.1.1
 
 ## New features
 
