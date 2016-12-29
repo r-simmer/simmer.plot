@@ -41,9 +41,13 @@ plot.trajectory <- function(x, ...) {
   # capture output with pointers
   old_verbose <- x$verbose
   x$verbose <- TRUE
-  out <- utils::capture.output(x)
+  out <- gsub("\b", "", utils::capture.output(x))
   x$verbose <- old_verbose
   out <- out[grep("0x", out)]
+
+  # assign reproducible identifiers
+  ids <- sub(" ->.*", "", sub(".*<- ", "", out))
+  for (i in seq_along(ids)) out <- gsub(ids[i], i, out)
 
   # find forks & rollbacks
   level <- nchar(sub("\\{.*", "", out)) / 2
@@ -59,9 +63,12 @@ plot.trajectory <- function(x, ...) {
 
   # back connections
   out <- sub("[[:alpha:]]*[[:space:]]*\\| ", "", out)
-  b_edges <- sub(" ->.*", "", out)
-  b_edges <- t(as.data.frame(strsplit(b_edges, " <- ")))
-  b_edges <- as.data.frame(b_edges, stringsAsFactors=FALSE)
+  b_edges <- sub(" ->.*", "", out) %>%
+    strsplit(" <- ") %>%
+    lapply(as.numeric) %>%
+    as.data.frame() %>%
+    t() %>%
+    as.data.frame(stringsAsFactors=FALSE)
   colnames(b_edges) <- c("from", "to")
   nodes$nodes <- b_edges$to
   b_edges <- utils::tail(b_edges, -1)
@@ -69,12 +76,15 @@ plot.trajectory <- function(x, ...) {
 
   # forward connections
   out <- sub(".*<- ", "", out)
-  f_edges <- sub(" \\|.*", "", out)
-  f_edges <- t(as.data.frame(strsplit(f_edges, " -> ")))
-  f_edges <- as.data.frame(f_edges, stringsAsFactors=FALSE)
+  f_edges <- sub(" \\|.*", "", out) %>%
+    strsplit(" -> ") %>%
+    lapply(as.numeric) %>%
+    as.data.frame() %>%
+    t() %>%
+    as.data.frame(stringsAsFactors=FALSE)
   rownames(f_edges) <- NULL
   colnames(f_edges) <- c("from", "to")
-  f_edges <- f_edges[-grep("0 +", f_edges$to),]
+  f_edges <- f_edges[f_edges$to != 0,]
 
   # additional info & rollbacks
   out <- sub(".*\\| ", "", out)
@@ -93,7 +103,7 @@ plot.trajectory <- function(x, ...) {
     if (amounts[i]) for (j in 1:amounts[i]) {
       graph <- DiagrammeR::trav_in(graph)
     }
-    to <- DiagrammeR::get_selection(graph)
+    to <- as.numeric(DiagrammeR::get_selection(graph))
     graph <- DiagrammeR::clear_selection(graph)
     r_edges <- rbind(r_edges, data.frame(from=from, to=to))
   }

@@ -31,20 +31,32 @@ test_that("a complex trajectory is correctly converted to graph", {
 
   graph <- plot(x, output="DOT")
   graph_lines <- strsplit(graph, "\n")[[1]]
+
   nodes <- graph_lines[grep("label", graph_lines)]
-  labels <- nodes %>% sub(".*label = '", "", .) %>% sub("'.*", "", .)
-  ids <- nodes %>% sub("[[:space:]]*'", "", .) %>% sub("' \\[label.*", "", .)
-  for (i in 1:length(ids))
-    graph <- gsub(ids[[i]], i, graph)
-  graph_lines <- strsplit(graph, "\n")[[1]]
-  edges <- graph_lines[grep("->", graph_lines)]
-  edges <- edges %>% sub(" \\[.*", "", .) %>% gsub("'", "", .)
-  edges <- strsplit(edges, "->") %>%
+  id <- nodes %>%
+    sub("[[:space:]]*'", "", .) %>%
+    sub("' \\[.*", "", .) %>%
+    as.numeric()
+  label <- nodes %>%
+    sub(".*label = '", "", .) %>%
+    sub("'.*", "", .)
+  nodes <- data.frame(id=id, label=label) %>%
+    dplyr::arrange_("id")
+
+  edges <- graph_lines[grep("->", graph_lines)] %>%
+    sub(" \\[.*", "", .) %>%
+    gsub("'", "", .) %>%
+    strsplit("->") %>%
+    lapply(as.numeric) %>%
     as.data.frame %>% t %>%
     as.data.frame(stringsAsFactors = FALSE)
-  from <- as.numeric(edges$V1)
-  to <- as.numeric(edges$V2)
+  rownames(edges) <- NULL
+  colnames(edges) <- c("from", "to")
+  edges <- dplyr::arrange_(edges, "from", "to")
 
-  expect_true(all(from == c(1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 16, 18, 4, 5, 5, 9, 4, 17, 19)))
-  expect_true(all(to == c(2, 3, 4, 18, 18, 7, 8, 18, 11, 18, 13, 14, 15, 16, 17, 19, 5, 6, 9, 10, 12, 1, 4)))
+  expect_true(all(nodes$label == c("Seize", "Timeout", "Release", "Branch", "Clone", "Seize", "Timeout",
+                                   "Release", "Trap", "Timeout", "Timeout", "SetAttribute", "SetAttribute",
+                                   "Seize", "Timeout", "Release", "Rollback", "Timeout", "Rollback")))
+  expect_true(all(edges$from == c(1, 2, 3, 4, 4, 4, 5, 5, 5, 6, 7, 8, 9, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19)))
+  expect_true(all(edges$to == c(2, 3, 4, 5, 12, 18, 6, 9, 18, 7, 8, 18, 10, 11, 18, 13, 14, 15, 16, 17, 1, 19, 4)))
 })
