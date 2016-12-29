@@ -1,5 +1,8 @@
-## New patch release
+## Resubmission
 
+LICENSE file fixed.
+
+----
 This patch (hopefully) solves a couple of CRAN check problems:
 
 * Converts an htmlwidget to SVG to solve a WARN in Solaris (thus reducing the footprint of the package).
@@ -27,7 +30,7 @@ License components with restrictions and base license permitting such:
   MIT + file LICENSE
 File 'LICENSE':
   YEAR: 2016
-  COPYRIGHT HOLDERS: BART SMEETS, IÑAKI UCAR
+  COPYRIGHT HOLDER: Bart Smeets, Iñaki Ucar
 
 ## Downstream dependencies
 
