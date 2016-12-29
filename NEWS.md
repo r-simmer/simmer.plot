@@ -1,3 +1,10 @@
+# simmer.plot 0.1.2
+
+## Minor changes and fixes
+
+* Reduce the footprint caused by the "Plotting simmer trajectories" vignette, thus solving also a WARN in Solaris builds (9cb833a).
+* Assign reproducible identifiers to nodes instead of using external pointers in `plot.trajectory()`. The DOT output can be verified regardless of the ordering (3c3bc9b).
+
 # simmer.plot 0.1.1
 
 ## New features

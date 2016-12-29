@@ -1,6 +1,9 @@
 ## New patch release
 
+This patch (hopefully) solves a couple of CRAN check problems:
 
+* Converts an htmlwidget to SVG to solve a WARN in Solaris (thus reducing the footprint of the package).
+* Assigns reproducible identifiers to nodes in graphs for more robust testing (to solve an ERROR).
 
 ## Test environments
 
