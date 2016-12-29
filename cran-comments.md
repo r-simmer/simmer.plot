@@ -1,6 +1,6 @@
-## Resubmission
+## New patch release
 
-CRAN URL fixed.
+
 
 ## Test environments
 
@@ -15,7 +15,7 @@ CRAN URL fixed.
 
 There were no ERRORs or WARNINGs.
 
-There were 2 NOTEs:
+There were 1 NOTEs:
 
 * checking CRAN incoming feasibility ... NOTE
 Maintainer: ‘Iñaki Ucar <i.ucar86@gmail.com>’
@@ -25,11 +25,6 @@ License components with restrictions and base license permitting such:
 File 'LICENSE':
   YEAR: 2016
   COPYRIGHT HOLDERS: BART SMEETS, IÑAKI UCAR
-
-* checking installed package size ... NOTE
-  installed size is  5.2Mb
-  sub-directories of 1Mb or more:
-    doc   5.1Mb
 
 ## Downstream dependencies
 

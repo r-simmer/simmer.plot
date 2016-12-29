@@ -46,9 +46,13 @@ t0 <- trajectory() %>%
            rollback(9)) %>%
   timeout(1) %>%
   rollback(2)
+```
 
+```{r, eval=FALSE}
 plot(t0)
 ```
+
+![](includes/trajectory.svg)
 
 ```{r, message=FALSE}
 cat(plot(t0, output="DOT"))
