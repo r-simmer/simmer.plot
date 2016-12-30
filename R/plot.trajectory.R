@@ -59,7 +59,8 @@ plot.trajectory <- function(x, ...) {
   colnames(nodes) <- "label"
   nodes$type <- nodes$label
   nodes$shape <- "box"
-  nodes[c(forks, rollbacks),]$shape <- "diamond"
+  if (length(c(forks, rollbacks)))
+    nodes[c(forks, rollbacks),]$shape <- "diamond"
 
   # back connections
   out <- sub("[[:alpha:]]*[[:space:]]*\\| ", "", out)
@@ -101,7 +102,7 @@ plot.trajectory <- function(x, ...) {
   # resolve rollbacks from back connections
   r_edges <- NULL
   graph <- DiagrammeR::create_graph(nodes, b_edges)
-  for (i in 1:length(amounts)) {
+  for (i in seq_along(amounts)) {
     from <- nodes[rollbacks[i],]$nodes
     graph <- DiagrammeR::select_nodes_by_id(graph, from)
     if (amounts[i]) for (j in 1:amounts[i]) {
@@ -115,9 +116,11 @@ plot.trajectory <- function(x, ...) {
   # compose edges
   edges <- unique(rbind(f_edges, b_edges, r_edges))
   edges$color <- "black"
-  edges[c(forks),]$color <- "gray"
   edges$style <- "solid"
-  edges[c(forks),]$style <- "dashed"
+  if (length(forks)) {
+    edges[c(forks),]$color <- "gray"
+    edges[c(forks),]$style <- "dashed"
+  }
 
   graph <- DiagrammeR::create_graph(nodes, edges)
   DiagrammeR::render_graph(graph, ...)
