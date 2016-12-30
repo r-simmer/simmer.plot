@@ -111,9 +111,8 @@ plot.trajectory <- function(x, ...) {
   for (i in seq_along(amounts)) {
     from <- nodes[rollbacks[i],]$nodes
     graph <- DiagrammeR::select_nodes_by_id(graph, from)
-    if (amounts[i]) for (j in 1:amounts[i]) {
+    for (j in seq_len(amounts[i]))
       graph <- DiagrammeR::trav_in(graph)
-    }
     to <- as.numeric(DiagrammeR::get_selection(graph))
     graph <- DiagrammeR::clear_selection(graph)
     r_edges <- rbind(r_edges, data.frame(from=from, to=to))
