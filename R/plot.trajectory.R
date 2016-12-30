@@ -115,12 +115,14 @@ plot.trajectory <- function(x, ...) {
 
   # compose edges
   edges <- unique(rbind(f_edges, b_edges, r_edges))
-  edges$color <- "black"
-  edges$style <- "solid"
-  if (length(forks)) {
-    edges[c(forks),]$color <- "gray"
-    edges[c(forks),]$style <- "dashed"
-  }
+  if (nrow(edges)) {
+    edges$color <- "black"
+    edges$style <- "solid"
+    if (length(forks)) {
+      edges[c(forks),]$color <- "gray"
+      edges[c(forks),]$style <- "dashed"
+    }
+  } else edges <- NULL
 
   graph <- DiagrammeR::create_graph(nodes, edges)
   DiagrammeR::render_graph(graph, ...)
