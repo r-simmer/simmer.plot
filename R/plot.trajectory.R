@@ -46,6 +46,8 @@ plot.trajectory <- function(x, ...) {
   out <- gsub("\b", "", utils::capture.output(x))
   x$verbose <- old_verbose
   out <- out[grep("0x", out)]
+  if (!length(out))
+    stop("no activity pointers found! The trajectory cannot be plotted.") # nocov
 
   # assign reproducible identifiers
   ids <- sub(" ->.*", "", sub(".*<- ", "", out))
