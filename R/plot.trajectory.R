@@ -38,6 +38,8 @@
 #'
 #' plot(x)
 plot.trajectory <- function(x, ...) {
+  stopifnot(length(x) > 0)
+
   # capture output with pointers
   old_verbose <- x$verbose
   x$verbose <- TRUE
