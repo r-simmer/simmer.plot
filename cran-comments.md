@@ -1,19 +1,10 @@
-## Resubmission
+## Patch release
 
-LICENSE file fixed.
-
-----
-This patch (hopefully) solves a couple of CRAN check problems:
-
-* Converts an htmlwidget to SVG to solve a WARN in Solaris (thus reducing the footprint of the package).
-* Assigns reproducible identifiers to nodes in graphs for more robust testing (to solve an ERROR).
+Sorry for sending another patch, stupid error by my side... This patch DEFINITELY solves the ERROR in some builds. In all my tested platforms, null pointers were printed as "0", but I didn't realise that this is implementation-dependent, and it could be "(nil)", it could be other things.
 
 ## Test environments
 
 * Fedora 25 + GCC + clang (local), R 3.3.2
-* Rocker image, GCC + SAN + R devel
-* Rocker image, clang + UBSAN + R devel
-* Docker image, clang + R patched
 * Ubuntu 12.04 + GCC (on travis-ci), R 3.2.5, 3.3.1, devel
 * win-builder, R devel
 

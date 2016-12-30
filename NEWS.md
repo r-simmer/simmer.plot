@@ -1,3 +1,9 @@
+# simmer.plot 0.1.4
+
+## Minor changes and fixes
+
+* Fix trajectory parsing (da45863). Different compilers represent NULL pointers in different ways: `0`, `(nil)`... 
+
 # simmer.plot 0.1.3
 
 ## Minor changes and fixes
