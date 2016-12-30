@@ -63,12 +63,14 @@ plot.trajectory <- function(x, ...) {
 
   # back connections
   out <- sub("[[:alpha:]]*[[:space:]]*\\| ", "", out)
-  b_edges <- sub(" ->.*", "", out) %>%
+  b_edges <- suppressWarnings(
+    sub(" ->.*", "", out) %>%
     strsplit(" <- ") %>%
     lapply(as.numeric) %>%
     as.data.frame() %>%
     t() %>%
     as.data.frame(stringsAsFactors=FALSE)
+  )
   colnames(b_edges) <- c("from", "to")
   nodes$nodes <- b_edges$to
   b_edges <- utils::tail(b_edges, -1)
@@ -76,15 +78,17 @@ plot.trajectory <- function(x, ...) {
 
   # forward connections
   out <- sub(".*<- ", "", out)
-  f_edges <- sub(" \\|.*", "", out) %>%
+  f_edges <- suppressWarnings(
+    sub(" \\|.*", "", out) %>%
     strsplit(" -> ") %>%
     lapply(as.numeric) %>%
     as.data.frame() %>%
     t() %>%
     as.data.frame(stringsAsFactors=FALSE)
+  )
   rownames(f_edges) <- NULL
   colnames(f_edges) <- c("from", "to")
-  f_edges <- f_edges[f_edges$to != 0,]
+  f_edges <- f_edges[f_edges$to != 0 & !is.na(f_edges$to),]
 
   # additional info & rollbacks
   out <- sub(".*\\| ", "", out)
