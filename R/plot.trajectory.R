@@ -47,7 +47,9 @@ plot.trajectory <- function(x, ...) {
   x$verbose <- old_verbose
   out <- out[grep("0x", out)]
   if (!length(out))
-    stop("no activity pointers found! The trajectory cannot be plotted.") # nocov
+    stop("no activity pointers found! \n",                                                      # nocov
+         "  This is embarrassing... The trajectory cannot be plotted without pointers!\n",      # nocov
+         "  Please, consider filling a bug at https://github.com/r-simmer/simmer.plot/issues")  # nocov
 
   # assign reproducible identifiers
   ids <- sub(" ->.*", "", sub(".*<- ", "", out))
