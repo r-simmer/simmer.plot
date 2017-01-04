@@ -1,4 +1,4 @@
-# simmer.plot 0.1.4.9000
+# simmer.plot 0.1.5
 
 ## Minor changes and fixes
 
@@ -7,6 +7,7 @@
 * Fail gracefully with empty trajectories (2d42d7f).
 * Fail gracefully if `simmer` doesn't return pointers (3be41cf, a60a641). This should not happen, though.
 * Improve tests (a9e7fa0).
+* Update to DiagrammeR 0.9.0 (dbc01b8).
 
 # simmer.plot 0.1.4
 

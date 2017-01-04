@@ -1,6 +1,6 @@
 ## Patch release
 
-Sorry for sending another patch, stupid error by my side... This patch DEFINITELY solves the ERROR in some builds. In all my tested platforms, null pointers were printed as "0", but I didn't realise that this is implementation-dependent, and it could be "(nil)", it could be other things.
+Update to DiagrammeR 0.9.0 + several fixes. For the record, I wasn't informed that this DiagrammeR update would break half the API.
 
 ## Test environments
 
@@ -20,7 +20,7 @@ Maintainer: ‘Iñaki Ucar <i.ucar86@gmail.com>’
 License components with restrictions and base license permitting such:
   MIT + file LICENSE
 File 'LICENSE':
-  YEAR: 2016
+  YEAR: 2016-2017
   COPYRIGHT HOLDER: Bart Smeets, Iñaki Ucar
 
 ## Downstream dependencies
