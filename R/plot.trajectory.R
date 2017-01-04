@@ -3,6 +3,7 @@
 #' A method for the \code{\link{plot}} generic that plots a diagram of the given trajectory.
 #'
 #' @param x a simmer trajectory.
+#' @param engine a string specifying a layout engine (see \code{\link{grViz}}).
 #' @param ... additional parameters for \code{\link{render_graph}}.
 #'
 #' @return Returns an \code{htmlwidget}.
@@ -37,9 +38,15 @@
 #'   rollback(2)
 #'
 #' plot(x)
-plot.trajectory <- function(x, ...) {
+plot.trajectory <- function(x, engine="dot", ...) {
   stopifnot(length(x) > 0)
 
+  trajectory_graph(x) %>%
+    DiagrammeR::set_global_graph_attrs("layout", engine, "graph") %>%
+    DiagrammeR::render_graph(...)
+}
+
+trajectory_graph <- function(x) {
   # capture output with pointers
   old_verbose <- x$verbose
   x$verbose <- TRUE
@@ -72,14 +79,14 @@ plot.trajectory <- function(x, ...) {
   out <- sub("[[:alpha:]]*[[:space:]]*\\| ", "", out)
   b_edges <- suppressWarnings(
     sub(" ->.*", "", out) %>%
-    strsplit(" <- ") %>%
-    lapply(as.numeric) %>%
-    as.data.frame() %>%
-    t() %>%
-    as.data.frame(stringsAsFactors=FALSE)
+      strsplit(" <- ") %>%
+      lapply(as.numeric) %>%
+      as.data.frame() %>%
+      t() %>%
+      as.data.frame(stringsAsFactors=FALSE)
   )
   colnames(b_edges) <- c("from", "to")
-  nodes$nodes <- b_edges$to
+  nodes$id <- b_edges$to
   b_edges <- utils::tail(b_edges, -1)
   rownames(b_edges) <- NULL
 
@@ -87,11 +94,11 @@ plot.trajectory <- function(x, ...) {
   out <- sub(".*<- ", "", out)
   f_edges <- suppressWarnings(
     sub(" \\|.*", "", out) %>%
-    strsplit(" -> ") %>%
-    lapply(as.numeric) %>%
-    as.data.frame() %>%
-    t() %>%
-    as.data.frame(stringsAsFactors=FALSE)
+      strsplit(" -> ") %>%
+      lapply(as.numeric) %>%
+      as.data.frame() %>%
+      t() %>%
+      as.data.frame(stringsAsFactors=FALSE)
   )
   rownames(f_edges) <- NULL
   colnames(f_edges) <- c("from", "to")
@@ -109,10 +116,12 @@ plot.trajectory <- function(x, ...) {
   r_edges <- NULL
   graph <- DiagrammeR::create_graph(nodes, b_edges)
   for (i in seq_along(amounts)) {
-    from <- nodes[rollbacks[i],]$nodes
+    from <- nodes[rollbacks[i],]$id
     graph <- DiagrammeR::select_nodes_by_id(graph, from)
-    for (j in seq_len(amounts[i]))
-      graph <- DiagrammeR::trav_in(graph)
+    try({
+      for (j in seq_len(amounts[i]))
+        graph <- DiagrammeR::trav_in(graph)
+    }, silent = TRUE)
     to <- as.numeric(DiagrammeR::get_selection(graph))
     graph <- DiagrammeR::clear_selection(graph)
     r_edges <- rbind(r_edges, data.frame(from=from, to=to))
@@ -121,6 +130,8 @@ plot.trajectory <- function(x, ...) {
   # compose edges
   edges <- unique(rbind(f_edges, b_edges, r_edges))
   if (nrow(edges)) {
+    edges$id <- 1:nrow(edges)
+    edges$rel <- NA
     edges$color <- "black"
     edges$style <- "solid"
     if (length(forks)) {
@@ -129,6 +140,5 @@ plot.trajectory <- function(x, ...) {
     }
   } else edges <- NULL
 
-  graph <- DiagrammeR::create_graph(nodes, edges)
-  DiagrammeR::render_graph(graph, ...)
+  DiagrammeR::create_graph(nodes, edges)
 }

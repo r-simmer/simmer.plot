@@ -4,10 +4,12 @@
 \alias{plot.trajectory}
 \title{Plot method for trajectory objects}
 \usage{
-\method{plot}{trajectory}(x, ...)
+\method{plot}{trajectory}(x, engine = "dot", ...)
 }
 \arguments{
 \item{x}{a simmer trajectory.}
+
+\item{engine}{a string specifying a layout engine (see \code{\link{grViz}}).}
 
 \item{...}{additional parameters for \code{\link{render_graph}}.}
 }

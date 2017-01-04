@@ -2,9 +2,12 @@ context("plot.trajectory")
 
 test_graph <- function(x, name, from, to) {
   expect_true(inherits(plot(x), "htmlwidget"))
-
-  graph <- plot(x, output="DOT")
-  graph_lines <- strsplit(graph, "\n")[[1]]
+  graph <- trajectory_graph(x)
+  expect_true(inherits(graph, "dgr_graph"))
+  dot <- DiagrammeR::generate_dot(graph)
+  expect_true(inherits(dot, "character"))
+  expect_true(length(dot) == 1)
+  graph_lines <- strsplit(dot, "\n")[[1]]
 
   nodes <- graph_lines[grep("label", graph_lines)]
   id <- nodes %>%
