@@ -7,22 +7,22 @@ test_graph <- function(x, name, from, to) {
   dot <- DiagrammeR::generate_dot(graph)
   expect_true(inherits(dot, "character"))
   expect_true(length(dot) == 1)
-  graph_lines <- strsplit(dot, "\n")[[1]]
+  graph_lines <- utils::capture.output(cat(dot))
 
   nodes <- graph_lines[grep("label", graph_lines)]
   id <- nodes %>%
-    sub("[[:space:]]*'", "", .) %>%
-    sub("' \\[.*", "", .) %>%
+    sub("[[:space:]]*'*\"*", "", .) %>%
+    sub("'*\"* \\[.*", "", .) %>%
     as.numeric()
   label <- nodes %>%
-    sub(".*label = '", "", .) %>%
-    sub("'.*", "", .)
+    sub(".*label = '*\"*", "", .) %>%
+    sub("'*\"*,.*", "", .)
   nodes <- data.frame(id=id, label=label) %>%
     dplyr::arrange_("id")
 
   edges <- graph_lines[grep("->", graph_lines)] %>%
     sub(" \\[.*", "", .) %>%
-    gsub("'", "", .) %>%
+    gsub("'*\"*", "", .) %>%
     strsplit("->") %>%
     lapply(as.numeric) %>%
     as.data.frame %>% t %>%
