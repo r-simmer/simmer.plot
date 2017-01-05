@@ -52,7 +52,7 @@ trajectory_graph <- function(x) {
   x$verbose <- TRUE
   out <- gsub("\b", "", utils::capture.output(x))
   x$verbose <- old_verbose
-  out <- out[grep("0x", out)]
+  out <- out[grep("0x", out, fixed=TRUE)]
   if (!length(out))
     stop("no activity pointers found! \n",                                                      # nocov
          "  This is embarrassing... The trajectory cannot be plotted without pointers!\n",      # nocov
@@ -65,7 +65,7 @@ trajectory_graph <- function(x) {
   # find forks & rollbacks
   level <- nchar(sub("\\{.*", "", out)) / 2
   forks <- which(diff(level) == 1)
-  rollbacks <- grep("Rollback", out)
+  rollbacks <- grep("Rollback", out, fixed=TRUE)
   # find activity names
   out <- sub(".*Activity: ", "", out)
   nodes <- as.data.frame(sub(" .*", "", out), stringsAsFactors=FALSE)
@@ -79,7 +79,7 @@ trajectory_graph <- function(x) {
   out <- sub("[[:alpha:]]*[[:space:]]*\\| ", "", out)
   b_edges <- suppressWarnings(
     sub(" ->.*", "", out) %>%
-      strsplit(" <- ") %>%
+      strsplit(" <- ", fixed=TRUE) %>%
       lapply(as.numeric) %>%
       as.data.frame() %>%
       t() %>%
@@ -94,7 +94,7 @@ trajectory_graph <- function(x) {
   out <- sub(".*<- ", "", out)
   f_edges <- suppressWarnings(
     sub(" \\|.*", "", out) %>%
-      strsplit(" -> ") %>%
+      strsplit(" -> ", fixed=TRUE) %>%
       lapply(as.numeric) %>%
       as.data.frame() %>%
       t() %>%
