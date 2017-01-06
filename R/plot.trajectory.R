@@ -43,6 +43,8 @@ plot.trajectory <- function(x, engine="dot", ...) {
 
   trajectory_graph(x) %>%
     DiagrammeR::set_global_graph_attrs("layout", engine, "graph") %>%
+    DiagrammeR::set_global_graph_attrs("fontname", "sans-serif", "node") %>%
+    DiagrammeR::set_global_graph_attrs("width", 1.5, "node") %>%
     DiagrammeR::render_graph(...)
 }
 
@@ -62,18 +64,28 @@ trajectory_graph <- function(x) {
   ids <- sub(" ->.*", "", sub(".*<- ", "", out))
   for (i in seq_along(ids)) out <- gsub(ids[i], i, out)
 
-  # find forks & rollbacks
+  # find forks & rollbacks & seizes/releases
   level <- nchar(sub("\\{.*", "", out)) / 2
   forks <- which(diff(level) == 1)
-  rollbacks <- grep("Rollback", out, fixed=TRUE)
+  rollbacks <- grep("Activity: Rollback", out, fixed=TRUE)
+  seizes <- grep("Activity: Seize", out, fixed=TRUE)
+  releases <- grep("Activity: Release", out, fixed=TRUE)
   # find activity names
   out <- sub(".*Activity: ", "", out)
   nodes <- as.data.frame(sub(" .*", "", out), stringsAsFactors=FALSE)
   colnames(nodes) <- "label"
-  nodes$type <- nodes$label
   nodes$shape <- "box"
-  if (length(c(forks, rollbacks)))
-    nodes[c(forks, rollbacks),]$shape <- "diamond"
+  nodes$style <- "solid"
+  nodes$color <- "black"
+  nodes$width <- 1.5
+  nodes$fontname <- "sans-serif"
+  if (length(c(forks, rollbacks))) {
+    nodes$shape[c(forks, rollbacks)] <- "diamond"
+    nodes$style[c(forks, rollbacks)] <- "filled"
+    nodes$color[c(forks, rollbacks)] <- "lightgrey"
+  }
+  if (length(c(seizes, releases)))
+    nodes$shape[c(seizes, releases)] <- "record"
 
   # back connections
   out <- sub("[[:alpha:]]*[[:space:]]*\\| ", "", out)
@@ -104,13 +116,17 @@ trajectory_graph <- function(x) {
   colnames(f_edges) <- c("from", "to")
   f_edges <- f_edges[f_edges$to != 0 & !is.na(f_edges$to),]
 
-  # additional info & rollbacks
-  out <- sub(".*\\| ", "", out)
+  # additional info & rollbacks & resources
+  out <- sub(".* -> [[:digit:]]+ +\\| ", "", out)
   info <- sub(" \\}", "", out)
   info[rollbacks] <- sub("amount: ", "", info[rollbacks])
   amounts <- as.numeric(sub(" \\(.*", "", info[rollbacks]))
   info[rollbacks] <- sub(".*, ", "", info[rollbacks])
+  info[c(seizes, releases)] <- sub("resource: ", "", info[c(seizes, releases)])
+  resources <- sub(",* .*", "", info[c(seizes, releases)])
+  info[c(seizes, releases)] <- sub(".+(,| \\|) ", "", info[c(seizes, releases)])
   nodes$tooltip <- info
+  nodes$label[c(seizes, releases)] <- paste0("{", nodes$label[c(seizes, releases)], "|", resources, "}")
 
   # resolve rollbacks from back connections
   r_edges <- NULL
@@ -135,7 +151,7 @@ trajectory_graph <- function(x) {
     edges$color <- "black"
     edges$style <- "solid"
     if (length(forks)) {
-      edges[c(forks),]$color <- "gray"
+      edges[c(forks),]$color <- "grey"
       edges[c(forks),]$style <- "dashed"
     }
   } else edges <- NULL
