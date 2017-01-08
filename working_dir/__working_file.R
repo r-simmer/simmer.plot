@@ -1,16 +1,14 @@
 library(simmer.plot)
 
 x <- trajectory() %>%
-  seize("resource", 1) %>%
-  timeout(function() rnorm(1, 15)) %>%
-  release("resource", 1) %>%
+  seize("res0", 1) %>%
   branch(function() 1, c(TRUE, FALSE),
          trajectory() %>%
            clone(2,
                  trajectory() %>%
-                   seize("resource", 1) %>%
+                   seize("res1", 1) %>%
                    timeout(1) %>%
-                   release("resource", 1),
+                   release("res1", 1),
                  trajectory() %>%
                    trap("signal",
                         handler=trajectory() %>%
@@ -18,12 +16,13 @@ x <- trajectory() %>%
                    timeout(1)),
          trajectory() %>%
            set_attribute("dummy", 1) %>%
-           set_attribute("dummy", function() 1) %>%
-           seize("resource", function() 1) %>%
+           seize("res2", function() 1) %>%
            timeout(function() rnorm(1, 20)) %>%
-           release("resource", function() 1) %>%
-           rollback(9)) %>%
-  timeout(1) %>%
-  rollback(2)
+           release("res2", function() 1) %>%
+           release("res0", 1) %>%
+           rollback(11)) %>%
+  synchronize() %>%
+  rollback(2) %>%
+  release("res0", 1)
 
 plot(x)

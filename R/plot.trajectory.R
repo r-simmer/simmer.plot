@@ -4,6 +4,7 @@
 #'
 #' @param x a simmer trajectory.
 #' @param engine a string specifying a layout engine (see \code{\link{grViz}}).
+#' @param fill discrete color palette for resource identification.
 #' @param ... additional parameters for \code{\link{render_graph}}.
 #'
 #' @return Returns an \code{htmlwidget}.
@@ -12,43 +13,23 @@
 #'
 #' @examples
 #' x <- trajectory() %>%
-#' seize("resource", 1) %>%
-#'   timeout(function() rnorm(1, 15)) %>%
-#'   release("resource", 1) %>%
-#'   branch(function() 1, c(TRUE, FALSE),
-#'          trajectory() %>%
-#'            clone(2,
-#'                  trajectory() %>%
-#'                    seize("resource", 1) %>%
-#'                    timeout(1) %>%
-#'                    release("resource", 1),
-#'                  trajectory() %>%
-#'                    trap("signal",
-#'                         handler=trajectory() %>%
-#'                           timeout(1)) %>%
-#'                    timeout(1)),
-#'          trajectory() %>%
-#'            set_attribute("dummy", 1) %>%
-#'            set_attribute("dummy", function() 1) %>%
-#'            seize("resource", function() 1) %>%
-#'            timeout(function() rnorm(1, 20)) %>%
-#'            release("resource", function() 1) %>%
-#'            rollback(9)) %>%
+#'   seize("res", 1) %>%
 #'   timeout(1) %>%
-#'   rollback(2)
+#'   release("res", 1) %>%
+#'   rollback(3)
 #'
 #' plot(x)
-plot.trajectory <- function(x, engine="dot", ...) {
+plot.trajectory <- function(x, engine="dot", fill=scales::brewer_pal("qual"), ...) {
   stopifnot(length(x) > 0)
 
-  trajectory_graph(x) %>%
+  trajectory_graph(x, fill) %>%
     DiagrammeR::set_global_graph_attrs("layout", engine, "graph") %>%
     DiagrammeR::set_global_graph_attrs("fontname", "sans-serif", "node") %>%
     DiagrammeR::set_global_graph_attrs("width", 1.5, "node") %>%
     DiagrammeR::render_graph(...)
 }
 
-trajectory_graph <- function(x) {
+trajectory_graph <- function(x, fill) {
   # capture output with pointers
   old_verbose <- x$verbose
   x$verbose <- TRUE
@@ -70,22 +51,19 @@ trajectory_graph <- function(x) {
   rollbacks <- grep("Activity: Rollback", out, fixed=TRUE)
   seizes <- grep("Activity: Seize", out, fixed=TRUE)
   releases <- grep("Activity: Release", out, fixed=TRUE)
+
   # find activity names
   out <- sub(".*Activity: ", "", out)
-  nodes <- as.data.frame(sub(" .*", "", out), stringsAsFactors=FALSE)
-  colnames(nodes) <- "label"
+  nodes <- data.frame(label = sub(" .*", "", out), stringsAsFactors=FALSE)
   nodes$shape <- "box"
+  nodes$shape[c(forks, rollbacks)] <- "diamond"
   nodes$style <- "solid"
+  nodes$style[c(forks, rollbacks)] <- "filled"
+  nodes$style[c(seizes, releases)] <- "filled"
   nodes$color <- "black"
+  nodes$color[c(forks, rollbacks)] <- "lightgrey"
   nodes$width <- 1.5
   nodes$fontname <- "sans-serif"
-  if (length(c(forks, rollbacks))) {
-    nodes$shape[c(forks, rollbacks)] <- "diamond"
-    nodes$style[c(forks, rollbacks)] <- "filled"
-    nodes$color[c(forks, rollbacks)] <- "lightgrey"
-  }
-  if (length(c(seizes, releases)))
-    nodes$shape[c(seizes, releases)] <- "record"
 
   # back connections
   out <- sub("[[:alpha:]]*[[:space:]]*\\| ", "", out)
@@ -97,10 +75,10 @@ trajectory_graph <- function(x) {
       t() %>%
       as.data.frame(stringsAsFactors=FALSE)
   )
+  rownames(b_edges) <- NULL
   colnames(b_edges) <- c("from", "to")
   nodes$id <- b_edges$to
   b_edges <- utils::tail(b_edges, -1)
-  rownames(b_edges) <- NULL
 
   # forward connections
   out <- sub(".*<- ", "", out)
@@ -122,11 +100,15 @@ trajectory_graph <- function(x) {
   info[rollbacks] <- sub("amount: ", "", info[rollbacks])
   amounts <- as.numeric(sub(" \\(.*", "", info[rollbacks]))
   info[rollbacks] <- sub(".*, ", "", info[rollbacks])
-  info[c(seizes, releases)] <- sub("resource: ", "", info[c(seizes, releases)])
-  resources <- sub(",* .*", "", info[c(seizes, releases)])
-  info[c(seizes, releases)] <- sub(".+(,| \\|) ", "", info[c(seizes, releases)])
+  resources <- sub("resource: ", "", info[c(seizes, releases)])
+  resources <- sub(",* .*", "", resources)
   nodes$tooltip <- info
-  nodes$label[c(seizes, releases)] <- paste0("{", nodes$label[c(seizes, releases)], "|", resources, "}")
+  nodes$color[c(seizes, releases)] <- dplyr::left_join(
+      data.frame(name = resources, stringsAsFactors = FALSE),
+      data.frame(name = unique(resources),
+                 color = fill(length(unique(resources))),
+                 stringsAsFactors = FALSE),
+      by = "name")$color
 
   # resolve rollbacks from back connections
   r_edges <- NULL
@@ -149,11 +131,9 @@ trajectory_graph <- function(x) {
     edges$id <- 1:nrow(edges)
     edges$rel <- NA
     edges$color <- "black"
+    edges$color[forks] <- "grey"
     edges$style <- "solid"
-    if (length(forks)) {
-      edges[c(forks),]$color <- "grey"
-      edges[c(forks),]$style <- "dashed"
-    }
+    edges$style[forks] <- "dashed"
   } else edges <- NULL
 
   DiagrammeR::create_graph(nodes, edges)

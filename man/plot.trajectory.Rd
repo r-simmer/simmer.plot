@@ -4,12 +4,15 @@
 \alias{plot.trajectory}
 \title{Plot method for trajectory objects}
 \usage{
-\method{plot}{trajectory}(x, engine = "dot", ...)
+\method{plot}{trajectory}(x, engine = "dot",
+  fill = scales::brewer_pal("qual"), ...)
 }
 \arguments{
 \item{x}{a simmer trajectory.}
 
 \item{engine}{a string specifying a layout engine (see \code{\link{grViz}}).}
+
+\item{fill}{discrete color palette for resource identification.}
 
 \item{...}{additional parameters for \code{\link{render_graph}}.}
 }
@@ -21,30 +24,10 @@ A method for the \code{\link{plot}} generic that plots a diagram of the given tr
 }
 \examples{
 x <- trajectory() \%>\%
-seize("resource", 1) \%>\%
-  timeout(function() rnorm(1, 15)) \%>\%
-  release("resource", 1) \%>\%
-  branch(function() 1, c(TRUE, FALSE),
-         trajectory() \%>\%
-           clone(2,
-                 trajectory() \%>\%
-                   seize("resource", 1) \%>\%
-                   timeout(1) \%>\%
-                   release("resource", 1),
-                 trajectory() \%>\%
-                   trap("signal",
-                        handler=trajectory() \%>\%
-                          timeout(1)) \%>\%
-                   timeout(1)),
-         trajectory() \%>\%
-           set_attribute("dummy", 1) \%>\%
-           set_attribute("dummy", function() 1) \%>\%
-           seize("resource", function() 1) \%>\%
-           timeout(function() rnorm(1, 20)) \%>\%
-           release("resource", function() 1) \%>\%
-           rollback(9)) \%>\%
+  seize("res", 1) \%>\%
   timeout(1) \%>\%
-  rollback(2)
+  release("res", 1) \%>\%
+  rollback(3)
 
 plot(x)
 }
