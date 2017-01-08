@@ -1,3 +1,10 @@
+# simmer.plot 0.1.5.9000
+
+## Minor changes and fixes
+
+* More robust testing (d4879ee, trying to address #2).
+* Visual improvements for `plot.trajectory()` (9b49f83, d84a469).
+
 # simmer.plot 0.1.5
 
 ## Minor changes and fixes
