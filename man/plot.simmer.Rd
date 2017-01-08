@@ -80,7 +80,9 @@ env <- simmer("SuperDuperSim") \%>\%
 env \%>\% run(until=80)
 
 plot(env, what="resources", metric="usage", "doctor", items = "server", steps = TRUE)
+
 plot(env, what="resources", metric="utilization", c("nurse", "doctor", "administration"))
+
 plot(env, what="arrivals", metric="waiting_time")
 
 }
