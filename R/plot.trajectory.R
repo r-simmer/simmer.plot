@@ -24,8 +24,8 @@ plot.trajectory <- function(x, engine="dot", fill=scales::brewer_pal("qual"), ..
 
   trajectory_graph(x, fill) %>%
     DiagrammeR::set_global_graph_attrs("layout", engine, "graph") %>%
-    DiagrammeR::set_global_graph_attrs("fontname", "sans-serif", "node") %>%
-    DiagrammeR::set_global_graph_attrs("width", 1.5, "node") %>%
+    DiagrammeR::add_global_graph_attrs("fontname", "sans-serif", "node") %>%
+    DiagrammeR::add_global_graph_attrs("width", 1.5, "node") %>%
     DiagrammeR::render_graph(...)
 }
 
@@ -62,8 +62,6 @@ trajectory_graph <- function(x, fill) {
   nodes$style[c(seizes, releases)] <- "filled"
   nodes$color <- "black"
   nodes$color[c(forks, rollbacks)] <- "lightgrey"
-  nodes$width <- 1.5
-  nodes$fontname <- "sans-serif"
 
   # back connections
   out <- sub("[[:alpha:]]*[[:space:]]*\\| ", "", out)
