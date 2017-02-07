@@ -4,43 +4,9 @@ test_graph <- function(x, name, from, to) {
   expect_true(inherits(plot(x), "htmlwidget"))
   graph <- trajectory_graph(x, scales::brewer_pal("qual"))
   expect_true(inherits(graph, "dgr_graph"))
-  dot <- DiagrammeR::generate_dot(graph)
-  expect_true(inherits(dot, "character"))
-  expect_true(length(dot) == 1)
-  graph_lines <- utils::capture.output(cat(dot))
-
-  nodes <- graph_lines[grep("label", graph_lines)]
-  id <- nodes %>%
-    sub("[[:space:]]*'*\"*", "", .) %>%
-    sub("'*\"* \\[.*", "", .) %>%
-    as.numeric()
-  label <- nodes %>%
-    sub(".*label = '*\"*", "", .) %>%
-    sub("'*\"*,.*", "", .)
-  nodes <- data.frame(id=id, label=label) %>%
-    dplyr::arrange_("id")
-
-  edges <- graph_lines[grep("->", graph_lines)] %>%
-    sub(" \\[.*", "", .) %>%
-    gsub("'*\"*", "", .) %>%
-    strsplit("->") %>%
-    lapply(as.numeric) %>%
-    as.data.frame %>% t %>%
-    as.data.frame(stringsAsFactors = FALSE)
-  if (nrow(edges)) {
-    rownames(edges) <- NULL
-    colnames(edges) <- c("from", "to")
-    edges <- dplyr::arrange_(edges, "from", "to")
-  } else edges <- NULL
-
-  expect_true(all(nodes$label == name))
-  if (!is.null(edges)) {
-    expect_true(all(edges$from == from))
-    expect_true(all(edges$to == to))
-  } else {
-    expect_null(from)
-    expect_null(to)
-  }
+  expect_true(all(graph$nodes_df$label == name))
+  expect_true(all(graph$edges_df$from == from))
+  expect_true(all(graph$edges_df$to == to))
 }
 
 test_that("a null trajectory fails", {
@@ -100,6 +66,6 @@ test_that("a complex trajectory is correctly converted to graph", {
              c("Seize", "Branch", "Clone", "Seize", "Timeout", "Release", "Trap",
                "Timeout", "Timeout", "SetAttribute", "Seize", "Timeout", "Release",
                "Release", "Rollback", "Synchronize", "Rollback", "Release"),
-             c(1, 2, 2, 2, 3, 3, 3, 4, 5, 6, 7, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 17),
-             c(2, 3, 10, 16, 4, 7, 16, 5, 6, 16, 8, 9, 16, 11, 12, 13, 14, 15, 1, 17, 2, 18))
+             c(1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 16, 17, 2, 3, 3, 7, 2, 15, 17),
+             c(2, 16, 16, 5, 6, 16, 9, 16, 11, 12, 13, 14, 15, 17, 18, 3, 4, 7, 8, 10, 1, 2))
 })
