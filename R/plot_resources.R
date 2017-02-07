@@ -29,17 +29,18 @@ plot_resources_usage <- function(monitor_data, items=c("system", "queue", "serve
   plot_obj <-
     ggplot(monitor_data, aes_(x = ~time, color = ~item)) +
     facet_grid(~resource) +
-    geom_line(aes_(y = ~mean, group = ~interaction(replication, item))) +
     geom_step(aes_(y = ~value, group = ~interaction(replication, item)), limits, lty = 2) +
     ggtitle(paste("Resource usage")) +
     ylab("in use") +
     xlab("time") +
     expand_limits(y = 0)
 
-  if (steps == T) {
+  if (steps == TRUE)
     plot_obj <- plot_obj +
       geom_step(aes_(y = ~value, group = ~interaction(replication, item)), alpha = .4)
-  }
+  else
+    plot_obj <- plot_obj +
+      geom_line(aes_(y = ~mean, group = ~interaction(replication, item)))
 
   plot_obj
 }
@@ -51,11 +52,11 @@ plot_resources_utilization <- function(monitor_data) {
     dplyr::filter_(~item == "server") %>%
     dplyr::group_by_(~resource) %>%
     dplyr::group_by_(~replication) %>%
-    dplyr::mutate_(runtime = "max(time)") %>%
+    dplyr::mutate_(runtime = ~max(time)) %>%
     dplyr::group_by_(~resource, ~replication, ~capacity, ~runtime) %>%
     dplyr::mutate_(in_use = ~(time - dplyr::lag(time)) * dplyr::lag(value)) %>%
     dplyr::group_by_(~resource, ~replication, ~capacity, ~runtime) %>%
-    dplyr::summarise_(in_use = ~sum(in_use, na.rm = T)) %>%
+    dplyr::summarise_(in_use = ~sum(in_use, na.rm = TRUE)) %>%
     dplyr::ungroup() %>%
     dplyr::mutate_(utilization = ~in_use / capacity / runtime) %>%
     dplyr::group_by_(~resource, ~capacity) %>%
