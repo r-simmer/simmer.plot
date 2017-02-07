@@ -129,9 +129,15 @@ trajectory_graph <- function(x, fill) {
     edges$id <- 1:nrow(edges)
     edges$rel <- NA
     edges$color <- "black"
-    edges$color[forks] <- "grey"
     edges$style <- "solid"
-    edges$style[forks] <- "dashed"
+    for (i in forks) {
+      edges[which(edges$from == i)[-1],]$color <- "grey"
+      edges[which(edges$from == i)[-1],]$style <- "dashed"
+    }
+    for (i in rollbacks) {
+      edges[rev(which(edges$from == i))[1],]$color <- "grey"
+      edges[rev(which(edges$from == i))[1],]$style <- "dashed"
+    }
   } else edges <- NULL
 
   DiagrammeR::create_graph(nodes, edges)

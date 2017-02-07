@@ -4,6 +4,7 @@
 
 * More robust testing (d4879ee, trying to address #2).
 * Visual improvements for `plot.trajectory()` (9b49f83, d84a469).
+* Assign the dashed-gray edge style to subtrajectories in a consistent way (addressing #3).
 
 # simmer.plot 0.1.5
 
