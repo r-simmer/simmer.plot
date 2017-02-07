@@ -29,7 +29,8 @@
     \item{\code{metric = "usage"}}{\describe{
       \item{\code{items}}{the components of the resource to be plotted, one or more
       of \code{c("system", "queue", "server")}.}
-      \item{\code{steps}}{adds the changes in the resource usage.}
+      \item{\code{steps}}{if \code{TRUE}, shows the instantaneous usage instead
+      of the cumulative average.}
     }}
   }}
   \item{\code{what = "attributes"}}{\describe{
@@ -86,4 +87,3 @@ plot(env, what="resources", metric="utilization", c("nurse", "doctor", "administ
 plot(env, what="arrivals", metric="waiting_time")
 
 }
-
