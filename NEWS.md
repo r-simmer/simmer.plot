@@ -5,6 +5,9 @@
 * More robust testing (d4879ee, trying to address #2).
 * Visual improvements for `plot.trajectory()` (9b49f83, d84a469).
 * Assign the dashed-gray edge style to subtrajectories in a consistent way (addressing #3).
+* Fix some defaults (8a7fb7d).
+* Do not plot cumulative average and steps at the same time for resources usage (89040bd).
+* Change alpha with the number of replications (60beae2).
 
 # simmer.plot 0.1.5
 
