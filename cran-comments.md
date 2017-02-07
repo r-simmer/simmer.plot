@@ -1,6 +1,6 @@
 ## Patch release
 
-Update to DiagrammeR 0.9.0 + several fixes. For the record, I wasn't informed that this DiagrammeR update would break half the API.
+Several fixes and improvements. More robust testing.
 
 ## Test environments
 
