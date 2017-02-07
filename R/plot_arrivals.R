@@ -15,7 +15,7 @@ plot_arrivals <- function(x, metric=c("activity_time", "waiting_time", "flow_tim
 plot_arrivals_activity_time <- function(monitor_data) {
   ggplot(monitor_data) +
     aes_(x = ~end_time, y = ~activity_time) +
-    geom_line(alpha = .4, aes_(group = ~replication)) +
+    geom_line(aes_(group = ~replication), alpha = set_alpha(monitor_data)) +
     stat_smooth() +
     xlab("simulation time") +
     ylab("activity time") +
@@ -26,7 +26,7 @@ plot_arrivals_activity_time <- function(monitor_data) {
 plot_arrivals_waiting_time <- function(monitor_data) {
   ggplot(monitor_data) +
     aes_(x = ~end_time, y = ~waiting_time) +
-    geom_line(alpha = .4, aes_(group = ~replication)) +
+    geom_line(aes_(group = ~replication), alpha = set_alpha(monitor_data)) +
     stat_smooth() +
     xlab("simulation time") +
     ylab("waiting time") +
@@ -37,7 +37,7 @@ plot_arrivals_waiting_time <- function(monitor_data) {
 plot_arrivals_flow_time <- function(monitor_data) {
   ggplot(monitor_data) +
     aes_(x = ~end_time, y = ~flow_time) +
-    geom_line(alpha = .4, aes_(group = ~replication)) +
+    geom_line(aes_(group = ~replication), alpha = set_alpha(monitor_data)) +
     stat_smooth() +
     xlab("simulation time") +
     ylab("flow time") +

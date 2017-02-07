@@ -37,10 +37,10 @@ plot_resources_usage <- function(monitor_data, items=c("system", "queue", "serve
 
   if (steps == TRUE)
     plot_obj <- plot_obj +
-      geom_step(aes_(y = ~value, group = ~interaction(replication, item)), alpha = .4)
+      geom_step(aes_(y = ~value, group = ~interaction(replication, item)), alpha = set_alpha(monitor_data))
   else
     plot_obj <- plot_obj +
-      geom_line(aes_(y = ~mean, group = ~interaction(replication, item)))
+      geom_line(aes_(y = ~mean, group = ~interaction(replication, item)), alpha = set_alpha(monitor_data))
 
   plot_obj
 }

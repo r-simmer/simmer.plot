@@ -33,7 +33,8 @@
 #'     \item{\code{metric = "usage"}}{\describe{
 #'       \item{\code{items}}{the components of the resource to be plotted, one or more
 #'       of \code{c("system", "queue", "server")}.}
-#'       \item{\code{steps}}{adds the changes in the resource usage.}
+#'       \item{\code{steps}}{if \code{TRUE}, shows the instantaneous usage instead
+#'       of the cumulative average.}
 #'     }}
 #'   }}
 #'   \item{\code{what = "attributes"}}{\describe{
@@ -82,24 +83,3 @@ plot.simmer <- function(x, what=c("resources", "arrivals", "attributes"), metric
 
 #' @export
 plot.wrap <- function(x, ...) plot.simmer(x, ...)
-
-#' @export
-plot.list <- function(x, ...) {
-  if (length(class(x)) == 1) {
-    stopifnot(all(class(x[[1]]) == sapply(x, class)))
-    plot_list_proxy(x, ...)
-  } else NextMethod()
-}
-
-plot_list_proxy <- function(x, ...) {
-  if (all(sapply(x, inherits, class(x[[1]]))))
-    class(x) <- c(class(x), class(x[[1]]))
-  plot(x, ...)
-}
-
-dispatch_next <- function(.next, ...) {
-  caller <- match.call(sys.function(-1), sys.call(-1))
-  caller <- as.character(caller)[[1]]
-  caller <- strsplit(caller, ".", fixed = TRUE)[[1]][[1]]
-  do.call(paste0(caller, "_", .next), list(...))
-}

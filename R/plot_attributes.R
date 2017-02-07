@@ -9,7 +9,7 @@ plot_attributes <- function(x, metric=NULL, keys=NULL, ...) {
   plot_obj <-
     ggplot(monitor_data) +
     aes_(x = ~time, y = ~value) +
-    geom_step(alpha = .4, aes_(group = ~replication)) +
+    geom_step(aes_(group = ~replication), alpha = set_alpha(monitor_data)) +
     stat_smooth() +
     xlab("simulation time") +
     ylab("value") +
