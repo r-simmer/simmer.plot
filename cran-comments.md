@@ -1,6 +1,6 @@
-## Patch release
+## Resubmission
 
-Several fixes and improvements. More robust testing.
+Again CRAN checks are failing with no clue about why. Complete testing re-think.
 
 ## Test environments
 

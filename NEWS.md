@@ -1,3 +1,9 @@
+# simmer.plot 0.1.7
+
+## Minor changes and fixes
+
+* Fix trajectory parsing (8295c52). Parsing DOT is definitely unreliable. Rely entirely on DiagrammeR.
+
 # simmer.plot 0.1.6
 
 ## Minor changes and fixes
