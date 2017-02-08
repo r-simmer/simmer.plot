@@ -1,4 +1,4 @@
-## Resubmission
+## Patch release
 
 Again CRAN checks are failing with no clue about why. Complete testing re-think.
 
