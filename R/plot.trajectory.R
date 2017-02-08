@@ -131,12 +131,12 @@ trajectory_graph <- function(x, fill) {
     edges$color <- "black"
     edges$style <- "solid"
     for (i in forks) {
-      edges[which(edges$from == i)[-1],]$color <- "grey"
-      edges[which(edges$from == i)[-1],]$style <- "dashed"
+      edges$color[which(edges$from == i)[-1]] <- "grey"
+      edges$style[which(edges$from == i)[-1]] <- "dashed"
     }
     for (i in rollbacks) {
-      edges[rev(which(edges$from == i))[1],]$color <- "grey"
-      edges[rev(which(edges$from == i))[1],]$style <- "dashed"
+      edges$color[rev(which(edges$from == i))[1]] <- "grey"
+      edges$style[rev(which(edges$from == i))[1]] <- "dashed"
     }
   } else edges <- NULL
 
