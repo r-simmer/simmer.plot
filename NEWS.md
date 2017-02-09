@@ -1,3 +1,10 @@
+# simmer.plot 0.1.7.9000
+
+## Minor changes and fixes
+
+* Fix forks with a single path (5fa5937).
+* Re-arrange dataframes in tests (6cc4f0a).
+
 # simmer.plot 0.1.7
 
 ## Minor changes and fixes
