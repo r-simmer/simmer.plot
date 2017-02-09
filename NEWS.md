@@ -4,6 +4,7 @@
 
 * Fix forks with a single path (5fa5937).
 * Re-arrange dataframes in tests (6cc4f0a).
+* Fix trajectory parsing with another NULL pointer format: `0x0` (d8c737f).
 
 # simmer.plot 0.1.7
 
