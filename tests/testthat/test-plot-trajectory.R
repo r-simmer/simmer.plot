@@ -7,9 +7,9 @@ test_graph <- function(x, name, from, to) {
 
   nodes_df <- dplyr::arrange_(graph$nodes_df, "id")
   edges_df <- dplyr::arrange_(graph$edges_df, "from", "to")
-  expect_true(all(nodes_df$label == name))
-  expect_true(all(edges_df$from == from))
-  expect_true(all(edges_df$to == to))
+  expect_equal(nodes_df$label, name)
+  expect_equal(edges_df$from, from)
+  expect_equal(edges_df$to, to)
 }
 
 test_that("a null trajectory fails", {
@@ -20,7 +20,7 @@ test_that("a single-node trajectory is correctly converted to graph", {
   x <- trajectory() %>%
     timeout(1)
 
-  test_graph(x, c("Timeout"), NULL, NULL)
+  test_graph(x, c("Timeout"), integer(0), integer(0))
 })
 
 test_that("a simple trajectory is correctly converted to graph", {
