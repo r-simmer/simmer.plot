@@ -42,6 +42,7 @@ trajectory_graph <- function(x, fill) {
          "  Please, consider filling a bug at https://github.com/r-simmer/simmer.plot/issues")  # nocov
 
   # assign reproducible identifiers
+  out <- gsub("0x0* ", "0 ", out)
   ids <- sub(" ->.*", "", sub(".*<- ", "", out))
   for (i in seq_along(ids)) out <- gsub(ids[i], i, out)
 
