@@ -1,4 +1,4 @@
-# simmer.plot 0.1.7.9000
+# simmer.plot 0.1.8
 
 ## Minor changes and fixes
 
