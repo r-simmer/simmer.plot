@@ -1,3 +1,9 @@
+# simmer.plot 0.1.8.9000
+
+## Minor changes and fixes
+
+* Workaround for Solaris SPARC (#2).
+
 # simmer.plot 0.1.8
 
 ## Minor changes and fixes
