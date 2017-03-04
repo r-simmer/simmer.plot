@@ -5,6 +5,7 @@
 #' @param x a simmer trajectory.
 #' @param engine a string specifying a layout engine (see \code{\link{grViz}}).
 #' @param fill discrete color palette for resource identification.
+#' @param verbose show additional info directly in the labels.
 #' @param ... additional parameters for \code{\link{render_graph}}.
 #'
 #' @return Returns an \code{htmlwidget}.
@@ -19,17 +20,17 @@
 #'   rollback(3)
 #'
 #' plot(x)
-plot.trajectory <- function(x, engine="dot", fill=scales::brewer_pal("qual"), ...) {
+plot.trajectory <- function(x, engine="dot", fill=scales::brewer_pal("qual"), verbose=FALSE, ...) {
   stopifnot(length(x) > 0)
 
-  trajectory_graph(x, fill) %>%
+  trajectory_graph(x, fill, verbose) %>%
     DiagrammeR::set_global_graph_attrs("layout", engine, "graph") %>%
     DiagrammeR::add_global_graph_attrs("fontname", "sans-serif", "node") %>%
     DiagrammeR::add_global_graph_attrs("width", 1.5, "node") %>%
     DiagrammeR::render_graph(...)
 }
 
-trajectory_graph <- function(x, fill) {
+trajectory_graph <- function(x, fill, verbose=FALSE) {
   # capture output with pointers
   old_verbose <- x$verbose
   x$verbose <- TRUE
@@ -106,6 +107,8 @@ trajectory_graph <- function(x, fill) {
   resources <- sub("resource: ", "", info[c(seizes, releases)])
   resources <- sub(",* .*", "", resources)
   nodes$tooltip <- info
+  if (verbose)
+    nodes$label <- paste0(nodes$label, "\n", gsub("\\||,", "\n", info))
   nodes$color[c(seizes, releases)] <- dplyr::left_join(
       data.frame(name = resources, stringsAsFactors = FALSE),
       data.frame(name = unique(resources),

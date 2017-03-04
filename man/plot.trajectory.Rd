@@ -5,7 +5,7 @@
 \title{Plot method for trajectory objects}
 \usage{
 \method{plot}{trajectory}(x, engine = "dot",
-  fill = scales::brewer_pal("qual"), ...)
+  fill = scales::brewer_pal("qual"), verbose = FALSE, ...)
 }
 \arguments{
 \item{x}{a simmer trajectory.}
@@ -13,6 +13,8 @@
 \item{engine}{a string specifying a layout engine (see \code{\link{grViz}}).}
 
 \item{fill}{discrete color palette for resource identification.}
+
+\item{verbose}{show additional info directly in the labels.}
 
 \item{...}{additional parameters for \code{\link{render_graph}}.}
 }
@@ -31,3 +33,4 @@ x <- trajectory() \%>\%
 
 plot(x)
 }
+
