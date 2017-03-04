@@ -35,6 +35,7 @@ trajectory_graph <- function(x, fill) {
   x$verbose <- TRUE
   out <- gsub("\b", "", utils::capture.output(x))
   x$verbose <- old_verbose
+  out <- paste0(out, "\n")
   out <- gsub("}", "}\n", out, fixed=TRUE)
   out <- utils::capture.output(cat(out))
   out <- out[grep("0x", out, fixed=TRUE)]
