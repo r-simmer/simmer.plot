@@ -3,6 +3,7 @@
 ## Minor changes and fixes
 
 * Workaround for Solaris SPARC (#2).
+* Remove ignored edges in `clone()` (#6).
 
 # simmer.plot 0.1.8
 
