@@ -1,6 +1,6 @@
 ## Patch release
 
-Fix CRAN ERRORs in r-release-osx-x86_64-mavericks, r-devel-macos-x86_64-clang and r-devel-linux-x86_64-fedora-clang.
+A couple of minor new features + bug fixes.
 
 ## Test environments
 
