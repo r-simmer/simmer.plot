@@ -33,4 +33,3 @@ x <- trajectory() \%>\%
 
 plot(x)
 }
-

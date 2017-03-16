@@ -87,4 +87,3 @@ plot(env, what="resources", metric="utilization", c("nurse", "doctor", "administ
 plot(env, what="arrivals", metric="waiting_time")
 
 }
-
