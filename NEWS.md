@@ -3,6 +3,7 @@
 ## Minor changes and fixes
 
 * Fix resource utilization plot with varying resource capacity (#8).
+* Fix trajectory parsing with yet another NULL pointer format: `(nil)` (#4).
 
 # simmer.plot 0.1.9
 

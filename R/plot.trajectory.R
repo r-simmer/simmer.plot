@@ -99,7 +99,7 @@ trajectory_graph <- function(x, fill, verbose=FALSE) {
   f_edges <- f_edges[f_edges$to != 0 & !is.na(f_edges$to),]
 
   # additional info & rollbacks & resources
-  out <- sub(".* -> [[:digit:]]+ +\\| ", "", out)
+  out <- sub(".* -> .* +\\| ", "", out)
   info <- sub(" \\}", "", out)
   info[rollbacks] <- sub("amount: ", "", info[rollbacks])
   amounts <- as.numeric(sub(" \\(.*", "", info[rollbacks]))
