@@ -1,3 +1,9 @@
+# simmer.plot 0.1.9.9000
+
+## Minor changes and fixes
+
+* Fix resource utilization plot with varying resource capacity (#8).
+
 # simmer.plot 0.1.9
 
 ## Minor changes and fixes

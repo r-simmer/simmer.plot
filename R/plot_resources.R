@@ -47,19 +47,10 @@ plot_resources_usage <- function(monitor_data, items=c("system", "queue", "serve
 
 plot_resources_utilization <- function(monitor_data) {
   monitor_data <- monitor_data %>%
-    tidyr::gather_("item", "value", c("server", "queue", "system")) %>%
-    dplyr::mutate_(item = ~factor(item)) %>%
-    dplyr::filter_(~item == "server") %>%
-    dplyr::group_by_(~resource) %>%
-    dplyr::group_by_(~replication) %>%
-    dplyr::mutate_(runtime = ~max(time)) %>%
-    dplyr::group_by_(~resource, ~replication, ~capacity, ~runtime) %>%
-    dplyr::mutate_(in_use = ~(time - dplyr::lag(time)) * dplyr::lag(value)) %>%
-    dplyr::group_by_(~resource, ~replication, ~capacity, ~runtime) %>%
-    dplyr::summarise_(in_use = ~sum(in_use, na.rm = TRUE)) %>%
-    dplyr::ungroup() %>%
-    dplyr::mutate_(utilization = ~in_use / capacity / runtime) %>%
-    dplyr::group_by_(~resource, ~capacity) %>%
+    dplyr::group_by_(~resource, ~replication) %>%
+    dplyr::mutate_(dt = ~time - dplyr::lag(time)) %>%
+    dplyr::mutate_(in_use = ~dt * dplyr::lag(server / capacity)) %>%
+    dplyr::summarise_(utilization = ~sum(in_use, na.rm = TRUE) / sum(dt, na.rm=TRUE)) %>%
     dplyr::summarise_(Q25 = ~stats::quantile(utilization, .25),
                       Q50 = ~stats::quantile(utilization, .5),
                       Q75 = ~stats::quantile(utilization, .75))
