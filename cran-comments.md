@@ -17,12 +17,6 @@ There were 1 NOTEs:
 * checking CRAN incoming feasibility ... NOTE
 Maintainer: ‘Iñaki Ucar <i.ucar86@gmail.com>’
 
-License components with restrictions and base license permitting such:
-  MIT + file LICENSE
-File 'LICENSE':
-  YEAR: 2016-2017
-  COPYRIGHT HOLDER: Bart Smeets, Iñaki Ucar
-
 ## Downstream dependencies
 
-There are currently no downstream dependencies for this package.
+There is one downstream dependency, simmer, for which I'm the maintainer too.
