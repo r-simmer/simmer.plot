@@ -1,9 +1,10 @@
-# simmer.plot 0.1.9.9000
+# simmer.plot 0.1.10
 
 ## Minor changes and fixes
 
 * Fix resource utilization plot with varying resource capacity (#8).
 * Fix trajectory parsing with yet another NULL pointer format: `(nil)` (#4).
+* Update to dplyr 0.7.x (537cdea).
 
 # simmer.plot 0.1.9
 

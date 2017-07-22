@@ -1,11 +1,11 @@
 ## Patch release
 
-A couple of minor new features + bug fixes.
+Bug fixes, fix ERROR on r-devel-linux-x86_64-fedora-clang, update to dplyr 0.7.x.
 
 ## Test environments
 
-* Fedora 25 + GCC + clang (local), R 3.3.2
-* Ubuntu 12.04 + GCC (on travis-ci), R 3.2.5, 3.3.1, devel
+* Fedora 26 + GCC + clang (local), R 3.4.1
+* Ubuntu 12.04 + GCC (on travis-ci), R 3.3.3, 3.4.0, devel
 * win-builder, R devel
 
 ## R CMD check results
