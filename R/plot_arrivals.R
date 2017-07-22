@@ -6,8 +6,8 @@ plot_arrivals <- function(x, metric=c("activity_time", "waiting_time", "flow_tim
     stop("no data available")
 
   monitor_data <- monitor_data %>%
-    dplyr::mutate_(flow_time = ~end_time - start_time,
-                   waiting_time = ~flow_time - activity_time)
+    dplyr::mutate(flow_time = .data$end_time - .data$start_time,
+                  waiting_time = .data$flow_time - .data$activity_time)
 
   dispatch_next(metric, monitor_data, ...)
 }

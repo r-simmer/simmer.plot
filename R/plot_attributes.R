@@ -2,7 +2,7 @@ plot_attributes <- function(x, metric=NULL, keys=NULL, ...) {
   monitor_data <- get_mon_attributes(x)
   if (length(keys) > 0)
     monitor_data <- monitor_data %>%
-      dplyr::filter_(~key %in% keys)
+      dplyr::filter(.data$key %in% keys)
   if (nrow(monitor_data) == 0)
     stop("no data available for the 'keys' provided")
 

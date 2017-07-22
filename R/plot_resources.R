@@ -2,7 +2,7 @@ plot_resources <- function(x, metric=c("usage", "utilization"), names=NULL, ...)
   metric <- match.arg(metric)
 
   monitor_data <- get_mon_resources(x, data = c("counts", "limits")) %>%
-    dplyr::filter_(~resource %in% names)
+    dplyr::filter(.data$resource %in% names)
   if (nrow(monitor_data) == 0)
     stop("no data available for the 'names' provided")
 
@@ -13,17 +13,17 @@ plot_resources_usage <- function(monitor_data, items=c("system", "queue", "serve
   items <- match.arg(items, several.ok = TRUE)
 
   limits <- monitor_data %>%
-    dplyr::mutate_(server = ~capacity, queue = ~queue_size, system = ~limit) %>%
+    dplyr::mutate(server = .data$capacity, queue = .data$queue_size, system = .data$limit) %>%
     tidyr::gather_("item", "value", c("server", "queue", "system")) %>%
-    dplyr::mutate_(item = ~factor(item)) %>%
-    dplyr::filter_(~item %in% items)
+    dplyr::mutate(item = factor(.data$item)) %>%
+    dplyr::filter(.data$item %in% items)
 
   monitor_data <- monitor_data %>%
     tidyr::gather_("item", "value", c("server", "queue", "system")) %>%
-    dplyr::mutate_(item = ~factor(item)) %>%
-    dplyr::filter_(~item %in% items) %>%
-    dplyr::group_by_(~resource, ~replication, ~item) %>%
-    dplyr::mutate_(mean = ~c(0, cumsum(utils::head(value, -1) * diff(time))) / time) %>%
+    dplyr::mutate(item = factor(.data$item)) %>%
+    dplyr::filter(.data$item %in% items) %>%
+    dplyr::group_by(.data$resource, .data$replication, .data$item) %>%
+    dplyr::mutate(mean = c(0, cumsum(utils::head(.data$value, -1) * diff(.data$time))) / .data$time) %>%
     dplyr::ungroup()
 
   plot_obj <-
@@ -47,13 +47,13 @@ plot_resources_usage <- function(monitor_data, items=c("system", "queue", "serve
 
 plot_resources_utilization <- function(monitor_data) {
   monitor_data <- monitor_data %>%
-    dplyr::group_by_(~resource, ~replication) %>%
-    dplyr::mutate_(dt = ~time - dplyr::lag(time)) %>%
-    dplyr::mutate_(in_use = ~dt * dplyr::lag(server / capacity)) %>%
-    dplyr::summarise_(utilization = ~sum(in_use, na.rm = TRUE) / sum(dt, na.rm=TRUE)) %>%
-    dplyr::summarise_(Q25 = ~stats::quantile(utilization, .25),
-                      Q50 = ~stats::quantile(utilization, .5),
-                      Q75 = ~stats::quantile(utilization, .75))
+    dplyr::group_by(.data$resource, .data$replication) %>%
+    dplyr::mutate(dt = .data$time - dplyr::lag(.data$time)) %>%
+    dplyr::mutate(in_use = .data$dt * dplyr::lag(.data$server / .data$capacity)) %>%
+    dplyr::summarise(utilization = sum(.data$in_use, na.rm = TRUE) / sum(.data$dt, na.rm=TRUE)) %>%
+    dplyr::summarise(Q25 = stats::quantile(.data$utilization, .25),
+                     Q50 = stats::quantile(.data$utilization, .5),
+                     Q75 = stats::quantile(.data$utilization, .75))
 
   ggplot(monitor_data) +
     aes_(x = ~resource, y = ~Q50, ymin = ~Q25, ymax = ~Q75) +

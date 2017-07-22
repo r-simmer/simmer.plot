@@ -19,7 +19,7 @@ Depends:
 Imports:
     DiagrammeR (>= 0.9.0),
     scales,
-    dplyr,
+    dplyr (>= 0.7.0),
     tidyr,
     utils
 Suggests:

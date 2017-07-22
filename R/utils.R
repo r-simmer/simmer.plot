@@ -1,3 +1,6 @@
+# for dplyr
+.data <- NULL
+
 #' @export
 plot.list <- function(x, ...) {
   if (length(class(x)) == 1) {

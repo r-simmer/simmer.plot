@@ -5,8 +5,8 @@ test_graph <- function(x, name, from, to) {
   graph <- trajectory_graph(x, scales::brewer_pal("qual"))
   expect_true(inherits(graph, "dgr_graph"))
 
-  nodes_df <- dplyr::arrange_(graph$nodes_df, "id")
-  edges_df <- dplyr::arrange_(graph$edges_df, "from", "to")
+  nodes_df <- dplyr::arrange(graph$nodes_df, .data$id)
+  edges_df <- dplyr::arrange(graph$edges_df, .data$from, .data$to)
   expect_equal(nodes_df$label, name)
   expect_equal(edges_df$from, from)
   expect_equal(edges_df$to, to)
