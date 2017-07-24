@@ -1,3 +1,9 @@
+# simmer.plot 0.1.10.9000
+
+## Minor changes and fixes
+
+* Fix trajectory parsing with variable-length pointers (#9).
+
 # simmer.plot 0.1.10
 
 ## Minor changes and fixes

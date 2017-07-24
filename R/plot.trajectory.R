@@ -47,7 +47,7 @@ trajectory_graph <- function(x, fill, verbose=FALSE) {
 
   # assign reproducible identifiers
   out <- gsub("0x0* ", "0 ", out)
-  ids <- sub(" ->.*", "", sub(".*<- ", "", out))
+  ids <- sub(" +->.*", "", sub(".*<- +", "", out))
   for (i in seq_along(ids)) out <- gsub(ids[i], i, out)
 
   # find forks & rollbacks & seizes/releases
