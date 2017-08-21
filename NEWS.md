@@ -3,6 +3,8 @@
 ## Minor changes and fixes
 
 * Fix trajectory parsing with variable-length pointers (#9).
+* Update to tidyr 0.7.x (da58045).
+* Update to DiagrammeR 0.9.1 (247aa4f).
 
 # simmer.plot 0.1.10
 
