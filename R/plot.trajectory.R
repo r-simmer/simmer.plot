@@ -115,6 +115,8 @@ trajectory_graph <- function(x, fill, verbose=FALSE) {
                  color = fill(length(unique(resources))),
                  stringsAsFactors = FALSE),
       by = "name")$color
+  nodes$fillcolor <- nodes$color
+  nodes$fontcolor <- "black"
 
   # resolve rollbacks from back connections
   r_edges <- NULL
