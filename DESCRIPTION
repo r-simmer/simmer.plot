@@ -20,7 +20,7 @@ Imports:
     DiagrammeR (>= 0.9.0),
     scales,
     dplyr (>= 0.7.0),
-    tidyr,
+    tidyr (>= 0.7.0),
     utils
 Suggests:
     testthat,

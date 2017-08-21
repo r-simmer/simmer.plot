@@ -14,12 +14,12 @@ plot_resources_usage <- function(monitor_data, items=c("system", "queue", "serve
 
   limits <- monitor_data %>%
     dplyr::mutate(server = .data$capacity, queue = .data$queue_size, system = .data$limit) %>%
-    tidyr::gather_("item", "value", c("server", "queue", "system")) %>%
+    tidyr::gather("item", "value", c("server", "queue", "system")) %>%
     dplyr::mutate(item = factor(.data$item)) %>%
     dplyr::filter(.data$item %in% items)
 
   monitor_data <- monitor_data %>%
-    tidyr::gather_("item", "value", c("server", "queue", "system")) %>%
+    tidyr::gather("item", "value", c("server", "queue", "system")) %>%
     dplyr::mutate(item = factor(.data$item)) %>%
     dplyr::filter(.data$item %in% items) %>%
     dplyr::group_by(.data$resource, .data$replication, .data$item) %>%
