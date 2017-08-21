@@ -9,7 +9,11 @@
 
 ## Documentation
 
-Documentation is available at [r-simmer.org/extensions/plot/reference](http://r-simmer.org/extensions/plot/reference).
+Documentation is available at [r-simmer.org/extensions/plot/reference](http://r-simmer.org/extensions/plot/reference). To get started, please explore our [vignettes online](http://r-simmer.org/extensions/plot/articles/), or in R:
+
+``` r
+vignette(package = "simmer.plot")
+```
 
 ## Installation
 
@@ -23,12 +27,4 @@ The installation from GitHub requires the [devtools](https://github.com/hadley/d
 
 ``` r
 devtools::install_github("r-simmer/simmer.plot")
-```
-
-## Learning simmer.plot
-
-To get started, please explore our [vignettes online](http://r-simmer.org/extensions/plot/articles/), or in R:
-
-``` r
-vignette(package = "simmer.plot")
 ```
