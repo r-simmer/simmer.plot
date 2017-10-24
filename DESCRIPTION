@@ -5,12 +5,10 @@ Version: 0.1.10.9000
 Authors@R: c(
     person("Iñaki", "Ucar", email="i.ucar86@gmail.com", role=c("aut", "cph", "cre")),
     person("Bart", "Smeets", email="bartsmeets86@gmail.com", role=c("aut", "cph")))
-Description: A set of plotting methods for 'simmer' trajectories and
-    simulations.
+Description: A set of plotting methods for 'simmer' trajectories and simulations.
 License: MIT + file LICENSE
 Encoding: UTF-8
-URL: http://r-simmer.org,
-    https://github.com/r-simmer/simmer.plot
+URL: http://r-simmer.org, https://github.com/r-simmer/simmer.plot
 BugReports: https://github.com/r-simmer/simmer.plot/issues
 Depends:
     R (>= 3.1.2),
@@ -18,14 +16,15 @@ Depends:
     ggplot2 (>= 2.2.0)
 Imports:
     DiagrammeR (>= 0.9.0),
-    scales,
     dplyr (>= 0.7.0),
     tidyr (>= 0.7.0),
+    scales,
     utils
 Suggests:
     testthat,
     knitr,
     rmarkdown,
     covr
+ByteCompile: yes
 RoxygenNote: 6.0.1
 VignetteBuilder: knitr
