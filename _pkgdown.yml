@@ -28,3 +28,15 @@ navbar:
   - text: "News"
     icon: fa-newspaper-o
     href: news/index.html
+  - text: "Extensions"
+    icon: fa-puzzle-piece
+    menu:
+      - text: "simmer.plot"
+        href: extensions/plot
+      - text: "simmer.bricks"
+        href: https://github.com/r-simmer/simmer.bricks
+      - text: "simmer.optim"
+        href: https://github.com/r-simmer/simmer.optim
+      - text: "simmer.json"
+        href: https://github.com/r-simmer/simmer.json
+
