@@ -9,7 +9,6 @@
 #' @param ... additional parameters for \code{\link{render_graph}}.
 #'
 #' @return Returns an \code{htmlwidget}.
-#' @importFrom graphics plot
 #' @export
 #'
 #' @examples

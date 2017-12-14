@@ -43,8 +43,6 @@
 #' }
 #'
 #' @return Returns a ggplot2 object.
-#' @import simmer ggplot2
-#' @importFrom graphics plot
 #' @export
 #'
 #' @examples
