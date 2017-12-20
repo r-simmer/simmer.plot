@@ -1,10 +1,9 @@
-plot_attributes <- function(x, metric=NULL, keys=NULL, ...) {
+plot_attributes <- function(x, metric=NULL, keys, ...) {
   monitor_data <- get_mon_attributes(x)
-  if (length(keys) > 0)
-    monitor_data <- monitor_data %>%
-      dplyr::filter(.data$key %in% keys)
+  if (!missing(keys))
+    monitor_data <- dplyr::filter(monitor_data, .data$key %in% keys)
   if (nrow(monitor_data) == 0)
-    stop("no data available for the 'keys' provided")
+    stop("no data available or 'keys' not found")
 
   plot_obj <-
     ggplot(monitor_data) +
@@ -25,5 +24,4 @@ plot_attributes <- function(x, metric=NULL, keys=NULL, ...) {
   }
 
   plot_obj
-
 }

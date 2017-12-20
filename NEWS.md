@@ -1,3 +1,9 @@
+# simmer.plot 0.1.11.9000
+
+## Minor changes and fixes
+
+* Better defaults for resources and attributes (#13).
+
 # simmer.plot 0.1.11
 
 ## Minor changes and fixes

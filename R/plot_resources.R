@@ -1,10 +1,11 @@
-plot_resources <- function(x, metric=c("usage", "utilization"), names=NULL, ...) {
+plot_resources <- function(x, metric=c("usage", "utilization"), names, ...) {
   metric <- match.arg(metric)
 
-  monitor_data <- get_mon_resources(x, data = c("counts", "limits")) %>%
-    dplyr::filter(.data$resource %in% names)
+  monitor_data <- get_mon_resources(x, data = c("counts", "limits"))
+  if (!missing(names))
+    monitor_data <- dplyr::filter(monitor_data, .data$resource %in% names)
   if (nrow(monitor_data) == 0)
-    stop("no data available for the 'names' provided")
+    stop("no data available or resource 'names' not found")
 
   dispatch_next(metric, monitor_data, ...)
 }
