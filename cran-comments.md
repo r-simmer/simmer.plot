@@ -1,11 +1,11 @@
 ## Maintenance release
 
-Bug fixes and update to DiagrammeR 0.9.1 and tidyr 0.7.x.
+Some API improvements.
 
 ## Test environments
 
-* Fedora 26 + GCC + clang (local), R 3.4.1
-* Ubuntu 12.04 + GCC (on travis-ci), R 3.3.3, 3.4.1, devel
+* Fedora 27 + GCC + clang (local), R 3.4.2
+* Ubuntu 14.04 + GCC (on travis-ci), R 3.3.3, 3.4.2, devel
 * win-builder, R devel
 
 ## R CMD check results

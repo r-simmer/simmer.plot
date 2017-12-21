@@ -8,6 +8,11 @@ reference:
     contents:
       - plot.simmer
       - plot.trajectory
+      - plot.mon
+  - title: "Monitoring"
+    desc: "Methods for getting monitoring statistics"
+    contents:
+      - starts_with("get_mon")
 
 navbar:
   title: simmer.plot
