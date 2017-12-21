@@ -1,4 +1,11 @@
-context("plot_attributes")
+context("plot.attributes")
+
+test_that("errors are issued", {
+  attributes <- get_mon_attributes(simmer())
+  expect_is(attributes, "data.frame")
+  expect_is(attributes, "attributes")
+  expect_error(plot(get_mon_attributes(simmer())), "no data available")
+})
 
 t0 <-
   trajectory() %>%
@@ -10,9 +17,11 @@ test_that("single replication plots", {
     add_generator("frog", t0, function() rnorm(1, 10, 2), mon = 2) %>%
     run(80)
 
-  expect_is(plot(reps, "attributes"), "ggplot")
-  expect_is(plot(reps, "attributes", keys="my_attr1"), "ggplot")
-  expect_is(plot(reps, "attributes", keys=c("my_attr1", "my_attr2")), "ggplot")
+  attributes <- get_mon_attributes(reps)
+
+  expect_is(plot(attributes), "ggplot")
+  expect_is(plot(attributes, keys="my_attr1"), "ggplot")
+  expect_is(plot(attributes, keys=c("my_attr1", "my_attr2")), "ggplot")
 })
 
 test_that("multiple replication plots", {
@@ -22,7 +31,9 @@ test_that("multiple replication plots", {
       run(80)
   })
 
-  expect_is(plot(reps, "attributes"), "ggplot")
-  expect_is(plot(reps, "attributes", keys="my_attr1"), "ggplot")
-  expect_is(plot(reps, "attributes", keys=c("my_attr1", "my_attr2")), "ggplot")
+  attributes <- get_mon_attributes(reps)
+
+  expect_is(plot(attributes), "ggplot")
+  expect_is(plot(attributes, keys="my_attr1"), "ggplot")
+  expect_is(plot(attributes, keys=c("my_attr1", "my_attr2")), "ggplot")
 })

@@ -1,4 +1,11 @@
-context("plot_resources")
+context("plot.resources")
+
+test_that("errors are issued", {
+  resources <- get_mon_resources(simmer())
+  expect_is(resources, "data.frame")
+  expect_is(resources, "resources")
+  expect_error(plot(resources), "no data available")
+})
 
 t0 <- trajectory("my trajectory") %>%
   seize("nurse", 1) %>%
@@ -19,12 +26,14 @@ test_that("single replication plots", {
     add_generator("patient", t0, function() rnorm(1, 10, 2)) %>%
     run(80)
 
-  expect_is(plot(reps, "resources", "usage", "doctor"), "ggplot")
-  expect_is(plot(reps, "resources", "usage", c("nurse", "doctor")), "ggplot")
-  expect_is(plot(reps, "resources", "usage", "doctor", items = "server"), "ggplot")
-  expect_is(plot(reps, "resources", "usage", "doctor", items = "server", steps = TRUE), "ggplot")
-  expect_is(plot(reps, "resources", "utilization", "nurse"), "ggplot")
-  expect_is(plot(reps, "resources", "utilization", c("nurse", "doctor", "administration")), "ggplot")
+  resources <- get_mon_resources(reps)
+
+  expect_is(plot(resources, "usage", "doctor"), "ggplot")
+  expect_is(plot(resources, "usage", c("nurse", "doctor")), "ggplot")
+  expect_is(plot(resources, "usage", "doctor", items = "server"), "ggplot")
+  expect_is(plot(resources, "usage", "doctor", items = "server", steps = TRUE), "ggplot")
+  expect_is(plot(resources, "utilization", "nurse"), "ggplot")
+  expect_is(plot(resources, "utilization", c("nurse", "doctor", "administration")), "ggplot")
 })
 
 test_that("multiple replication plots", {
@@ -37,10 +46,12 @@ test_that("multiple replication plots", {
       run(80)
   })
 
-  expect_is(plot(reps, "resources", "usage", "doctor"), "ggplot")
-  expect_is(plot(reps, "resources", "usage", c("nurse", "doctor")), "ggplot")
-  expect_is(plot(reps, "resources", "usage", "doctor", items = "server"), "ggplot")
-  expect_is(plot(reps, "resources", "usage", "doctor", items = "server", steps = TRUE), "ggplot")
-  expect_is(plot(reps, "resources", "utilization", "nurse"), "ggplot")
-  expect_is(plot(reps, "resources", "utilization", c("nurse", "doctor", "administration")), "ggplot")
+  resources <- get_mon_resources(reps)
+
+  expect_is(plot(resources, "usage", "doctor"), "ggplot")
+  expect_is(plot(resources, "usage", c("nurse", "doctor")), "ggplot")
+  expect_is(plot(resources, "usage", "doctor", items = "server"), "ggplot")
+  expect_is(plot(resources, "usage", "doctor", items = "server", steps = TRUE), "ggplot")
+  expect_is(plot(resources, "utilization", "nurse"), "ggplot")
+  expect_is(plot(resources, "utilization", c("nurse", "doctor", "administration")), "ggplot")
 })

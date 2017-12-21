@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot.trajectory.R
 \name{plot.trajectory}
 \alias{plot.trajectory}
-\title{Plot method for trajectory objects}
+\title{Plot Method for \code{trajectory} Objects}
 \usage{
 \method{plot}{trajectory}(x, engine = "dot",
   fill = scales::brewer_pal("qual"), verbose = FALSE, ...)

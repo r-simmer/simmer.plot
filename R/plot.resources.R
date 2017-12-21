@@ -1,25 +1,42 @@
-plot_resources <- function(x, metric=c("usage", "utilization"), names, ...) {
-  metric <- match.arg(metric)
-
-  monitor_data <- get_mon_resources(x, data = c("counts", "limits"))
-  if (!missing(names))
-    monitor_data <- dplyr::filter(monitor_data, .data$resource %in% names)
-  if (nrow(monitor_data) == 0)
-    stop("no data available or resource 'names' not found")
-
-  dispatch_next(metric, monitor_data, ...)
+#' @name get_mon
+#' @export
+get_mon_resources <- function(...) {
+  x <- simmer::get_mon_resources(...)
+  class(x) <- c("resources", class(x))
+  x
 }
 
-plot_resources_usage <- function(monitor_data, items=c("system", "queue", "server"), steps=FALSE) {
+#' @name plot.mon
+#' @param names resources to plot (if left empty, all resources are shown).
+#' @param ... further arguments
+#' \describe{
+#'   \item{\code{items}, for \code{plot.resources(metric="usage")}}{components of
+#'   the resource to plot, one or more of \code{c("system", "queue", "server")}.}
+#'   \item{\code{steps}, for \code{plot.resources(metric="usage")}}{if \code{TRUE},
+#'   shows the instantaneous usage instead of the cumulative average.}
+#' }
+#' @export
+plot.resources <- function(x, metric=c("usage", "utilization"), names, ...) {
+  metric <- match.arg(metric)
+
+  if (!missing(names))
+    x <- dplyr::filter(x, .data$resource %in% names)
+  if (nrow(x) == 0)
+    stop("no data available or resource 'names' not found")
+
+  dispatch_next(metric, x, ...)
+}
+
+plot.resources.usage <- function(x, items=c("system", "queue", "server"), steps=FALSE) {
   items <- match.arg(items, several.ok = TRUE)
 
-  limits <- monitor_data %>%
+  limits <- x %>%
     dplyr::mutate(server = .data$capacity, queue = .data$queue_size, system = .data$limit) %>%
     tidyr::gather("item", "value", c("server", "queue", "system")) %>%
     dplyr::mutate(item = factor(.data$item)) %>%
     dplyr::filter(.data$item %in% items)
 
-  monitor_data <- monitor_data %>%
+  x <- x %>%
     tidyr::gather("item", "value", c("server", "queue", "system")) %>%
     dplyr::mutate(item = factor(.data$item)) %>%
     dplyr::filter(.data$item %in% items) %>%
@@ -28,7 +45,7 @@ plot_resources_usage <- function(monitor_data, items=c("system", "queue", "serve
     dplyr::ungroup()
 
   plot_obj <-
-    ggplot(monitor_data, aes_(x = ~time, color = ~item)) +
+    ggplot(x, aes_(x = ~time, color = ~item)) +
     facet_grid(~resource) +
     geom_step(aes_(y = ~value, group = ~interaction(replication, item)), limits, lty = 2) +
     ggtitle(paste("Resource usage")) +
@@ -38,16 +55,16 @@ plot_resources_usage <- function(monitor_data, items=c("system", "queue", "serve
 
   if (steps == TRUE)
     plot_obj <- plot_obj +
-      geom_step(aes_(y = ~value, group = ~interaction(replication, item)), alpha = set_alpha(monitor_data))
+      geom_step(aes_(y = ~value, group = ~interaction(replication, item)), alpha = set_alpha(x))
   else
     plot_obj <- plot_obj +
-      geom_line(aes_(y = ~mean, group = ~interaction(replication, item)), alpha = set_alpha(monitor_data))
+      geom_line(aes_(y = ~mean, group = ~interaction(replication, item)), alpha = set_alpha(x))
 
   plot_obj
 }
 
-plot_resources_utilization <- function(monitor_data) {
-  monitor_data <- monitor_data %>%
+plot.resources.utilization <- function(x) {
+  x <- x %>%
     dplyr::group_by(.data$resource, .data$replication) %>%
     dplyr::mutate(dt = .data$time - dplyr::lag(.data$time)) %>%
     dplyr::mutate(in_use = .data$dt * dplyr::lag(.data$server / .data$capacity)) %>%
@@ -56,7 +73,7 @@ plot_resources_utilization <- function(monitor_data) {
                      Q50 = stats::quantile(.data$utilization, .5),
                      Q75 = stats::quantile(.data$utilization, .75))
 
-  ggplot(monitor_data) +
+  ggplot(x) +
     aes_(x = ~resource, y = ~Q50, ymin = ~Q25, ymax = ~Q75) +
     geom_bar(stat = "identity") +
     geom_errorbar(width = .25, color = "black") +

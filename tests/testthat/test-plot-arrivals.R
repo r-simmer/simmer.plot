@@ -1,4 +1,11 @@
-context("plot_arrivals")
+context("plot.arrivals")
+
+test_that("errors are issued", {
+  arrivals <- get_mon_arrivals(simmer())
+  expect_is(arrivals, "data.frame")
+  expect_is(arrivals, "arrivals")
+  expect_error(plot(get_mon_arrivals(simmer())), "no data available")
+})
 
 t0 <- trajectory("my trajectory") %>%
   seize("nurse", 1) %>%
@@ -19,9 +26,11 @@ test_that("single replication plots", {
     add_generator("patient", t0, function() rnorm(1, 10, 2)) %>%
     run(80)
 
-  expect_is(plot(reps, "arrivals", "flow_time"), "ggplot")
-  expect_is(plot(reps, "arrivals", "activity_time"), "ggplot")
-  expect_is(plot(reps, "arrivals", "waiting_time"), "ggplot")
+  arrivals <- get_mon_arrivals(reps)
+
+  expect_is(plot(arrivals, "flow_time"), "ggplot")
+  expect_is(plot(arrivals, "activity_time"), "ggplot")
+  expect_is(plot(arrivals, "waiting_time"), "ggplot")
 })
 
 test_that("multiple replication plots", {
@@ -34,7 +43,9 @@ test_that("multiple replication plots", {
       run(80)
   })
 
-  expect_is(plot(reps, "arrivals", "flow_time"), "ggplot")
-  expect_is(plot(reps, "arrivals", "activity_time"), "ggplot")
-  expect_is(plot(reps, "arrivals", "waiting_time"), "ggplot")
+  arrivals <- get_mon_arrivals(reps)
+
+  expect_is(plot(arrivals, "flow_time"), "ggplot")
+  expect_is(plot(arrivals, "activity_time"), "ggplot")
+  expect_is(plot(arrivals, "waiting_time"), "ggplot")
 })

@@ -45,10 +45,12 @@ arrivals <- cumsum(rexp(100))
 service <- rexp(100)
 departures <- queue_step(arrivals = arrivals, service = service)
 
-wrapped <- qcwrap(departures)
-plot(wrapped, what="arrivals")                                    # ok
-plot(wrapped, what="resources", metric="usage", "QC")             # not ok
-plot(wrapped, what="resources", metric="usage", "QC", steps=TRUE) # not ok
+resources <- get_mon_resources(qcwrap(departures))
+arrivals <- get_mon_arrivals(qcwrap(departures))
+
+plot(arrivals)                                    # ok
+plot(resources, metric="usage", "QC")             # not ok
+plot(resources, metric="usage", "QC", steps=TRUE) # not ok
 
 ################################################################################
 
@@ -64,6 +66,9 @@ env <- simmer() %>%
   add_generator("arrival", mm1, at(arrivals)) %>%
   run(Inf)
 
-plot(env, what="arrivals")
-plot(env, what="resources", metric="usage", "QC")
-plot(env, what="resources", metric="usage", "QC", steps=TRUE)
+resources <- get_mon_resources(env)
+arrivals <- get_mon_arrivals(env)
+
+plot(arrivals)
+plot(resources, metric="usage", "QC")
+plot(resources, metric="usage", "QC", steps=TRUE)

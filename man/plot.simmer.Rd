@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot.simmer.R
 \name{plot.simmer}
 \alias{plot.simmer}
-\title{Plot method for simmer objects}
+\title{Plot Method for \code{simmer} Objects}
 \usage{
 \method{plot}{simmer}(x, what = c("resources", "arrivals", "attributes"),
   metric = NULL, ...)
@@ -42,48 +42,5 @@
 Returns a ggplot2 object.
 }
 \description{
-A method for the \code{\link{plot}} generic. There are three kinds of plots with different
-metrics available:
-\itemize{
-  \item Plot of resources. Two metrics available: \itemize{
-    \item the usage of a resource over the simulation time frame.
-    \item the utilization of specified resources in the simulation.
-  }
-  \item Plot of arrivals. Three metrics available: \itemize{
-    \item activity time.
-    \item waiting time.
-    \item flow time.
-  }
-  \item Plot of attributes.
-}
-}
-\examples{
-t0 <- trajectory("my trajectory") \%>\%
-  ## add an intake activity
-  seize("nurse", 1) \%>\%
-  timeout(function() rnorm(1, 15)) \%>\%
-  release("nurse", 1) \%>\%
-  ## add a consultation activity
-  seize("doctor", 1) \%>\%
-  timeout(function() rnorm(1, 20)) \%>\%
-  release("doctor", 1) \%>\%
-  ## add a planning activity
-  seize("administration", 1) \%>\%
-  timeout(function() rnorm(1, 5)) \%>\%
-  release("administration", 1)
-
-env <- simmer("SuperDuperSim") \%>\%
-  add_resource("nurse", 1) \%>\%
-  add_resource("doctor", 2) \%>\%
-  add_resource("administration", 1) \%>\%
-  add_generator("patient", t0, function() rnorm(1, 10, 2))
-
-env \%>\% run(until=80)
-
-plot(env, what="resources", metric="usage", "doctor", items = "server", steps = TRUE)
-
-plot(env, what="resources", metric="utilization", c("nurse", "doctor", "administration"))
-
-plot(env, what="arrivals", metric="waiting_time")
-
+Deprecated. See \code{\link{plot.mon}} instead.
 }

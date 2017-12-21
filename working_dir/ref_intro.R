@@ -23,6 +23,9 @@ envs <- lapply(1:100, function(i) {
     run(80)
 })
 
-plot(envs, "resources", "usage", c("doctor", "nurse", "administration"), items="server", steps=F)
-plot(envs, "resources", "utilization", c("nurse", "doctor", "administration"))
-plot(envs, "arrivals", "flow_time")
+resources <- get_mon_resources(envs)
+arrivals <- get_mon_arrivals(envs)
+
+plot(resources)
+plot(resources, "utilization")
+plot(arrivals, "flow_time")

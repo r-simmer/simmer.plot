@@ -1,19 +1,6 @@
-#' Plot method for simmer objects
+#' Plot Method for \code{simmer} Objects
 #'
-#' A method for the \code{\link{plot}} generic. There are three kinds of plots with different
-#' metrics available:
-#' \itemize{
-#'   \item Plot of resources. Two metrics available: \itemize{
-#'     \item the usage of a resource over the simulation time frame.
-#'     \item the utilization of specified resources in the simulation.
-#'   }
-#'   \item Plot of arrivals. Three metrics available: \itemize{
-#'     \item activity time.
-#'     \item waiting time.
-#'     \item flow time.
-#'   }
-#'   \item Plot of attributes.
-#' }
+#' Deprecated. See \code{\link{plot.mon}} instead.
 #'
 #' @param x a single simmer environment or a list of environments representing several replications.
 #' @param what type of plot, one of \code{c("resources", "arrivals", "attributes")}.
@@ -45,38 +32,11 @@
 #' @return Returns a ggplot2 object.
 #' @export
 #'
-#' @examples
-#' t0 <- trajectory("my trajectory") %>%
-#'   ## add an intake activity
-#'   seize("nurse", 1) %>%
-#'   timeout(function() rnorm(1, 15)) %>%
-#'   release("nurse", 1) %>%
-#'   ## add a consultation activity
-#'   seize("doctor", 1) %>%
-#'   timeout(function() rnorm(1, 20)) %>%
-#'   release("doctor", 1) %>%
-#'   ## add a planning activity
-#'   seize("administration", 1) %>%
-#'   timeout(function() rnorm(1, 5)) %>%
-#'   release("administration", 1)
-#'
-#' env <- simmer("SuperDuperSim") %>%
-#'   add_resource("nurse", 1) %>%
-#'   add_resource("doctor", 2) %>%
-#'   add_resource("administration", 1) %>%
-#'   add_generator("patient", t0, function() rnorm(1, 10, 2))
-#'
-#' env %>% run(until=80)
-#'
-#' plot(env, what="resources", metric="usage", "doctor", items = "server", steps = TRUE)
-#'
-#' plot(env, what="resources", metric="utilization", c("nurse", "doctor", "administration"))
-#'
-#' plot(env, what="arrivals", metric="waiting_time")
-#'
 plot.simmer <- function(x, what=c("resources", "arrivals", "attributes"), metric=NULL, ...) {
   what <- match.arg(what)
-  dispatch_next(what, x, metric, ...)
+  .Deprecated(paste0("plot(get_mon_", what, "(x))"))
+  x <- do.call(paste0("get_mon_", what), list(.envs=x))
+  plot(x, metric, ...)
 }
 
 #' @export

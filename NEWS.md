@@ -1,8 +1,12 @@
-# simmer.plot 0.1.11.9000
+# simmer.plot 0.1.12
+
+## New features
+
+* New S3 methods for plotting monitoring statistics, which enable us to call `plot()` on the output of `get_mon_arrivals()`, `get_mon_attributes()` and `get_mon_resources()` (see `?plot.mon`). Calling `plot()` on the `simmer` environment will continue to work, but it is deprecated (#11).
 
 ## Minor changes and fixes
 
-* Better defaults for resources and attributes (#13).
+* Better defaults for resources and attributes: all names/keys are plotted if nothing is specified (#13).
 
 # simmer.plot 0.1.11
 

@@ -18,8 +18,7 @@ plot_list_proxy <- function(x, ...) {
 dispatch_next <- function(.next, ...) {
   caller <- match.call(sys.function(-1), sys.call(-1))
   caller <- as.character(caller)[[1]]
-  caller <- strsplit(caller, ".", fixed = TRUE)[[1]][[1]]
-  do.call(paste0(caller, "_", .next), list(...))
+  do.call(paste0(caller, ".", .next), list(...))
 }
 
 set_alpha <- function(data) {
