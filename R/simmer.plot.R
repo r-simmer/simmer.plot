@@ -8,7 +8,7 @@
 #' GitHub repository \url{https://github.com/r-simmer/simmer.plot}.
 #'
 #' @docType package
-#' @name simmer.plot
+#' @name simmer.plot-package
 #'
 #' @import simmer ggplot2
 #' @importFrom graphics plot
