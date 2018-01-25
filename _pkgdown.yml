@@ -37,9 +37,9 @@ navbar:
     icon: fa-puzzle-piece
     menu:
       - text: "simmer.plot"
-        href: /extensions/plot
+        href: ../plot
       - text: "simmer.bricks"
-        href: /extensions/bricks
+        href: ../bricks
       - text: "simmer.optim"
         href: https://github.com/r-simmer/simmer.optim
       - text: "simmer.json"
