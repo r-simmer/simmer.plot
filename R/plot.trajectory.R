@@ -23,7 +23,7 @@ plot.trajectory <- function(x, engine="dot", fill=scales::brewer_pal("qual"), ve
   stopifnot(length(x) > 0)
 
   trajectory_graph(x, fill, verbose) %>%
-    DiagrammeR::set_global_graph_attrs("layout", engine, "graph") %>%
+    DiagrammeR::add_global_graph_attrs("layout", engine, "graph") %>%
     DiagrammeR::add_global_graph_attrs("fontname", "sans-serif", "node") %>%
     DiagrammeR::add_global_graph_attrs("width", 1.5, "node") %>%
     DiagrammeR::render_graph(...)
@@ -120,7 +120,7 @@ trajectory_graph <- function(x, fill, verbose=FALSE) {
   # resolve rollbacks from back connections
   r_edges <- NULL
   graph <- DiagrammeR::create_graph(nodes, b_edges)
-  for (i in seq_along(amounts)) {
+  suppressMessages({for (i in seq_along(amounts)) {
     from <- nodes[rollbacks[i],]$id
     graph <- DiagrammeR::select_nodes_by_id(graph, from)
     try({
@@ -130,7 +130,7 @@ trajectory_graph <- function(x, fill, verbose=FALSE) {
     to <- as.numeric(DiagrammeR::get_selection(graph))
     graph <- DiagrammeR::clear_selection(graph)
     r_edges <- rbind(r_edges, data.frame(from=from, to=to))
-  }
+  }})
 
   # compose edges
   edges <- unique(rbind(f_edges, b_edges, r_edges))
