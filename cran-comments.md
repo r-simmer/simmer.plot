@@ -1,10 +1,10 @@
 ## Maintenance release
 
-Some API improvements.
+Update to the new version of DiagrammeR.
 
 ## Test environments
 
-* Fedora 27 + GCC + clang (local), R 3.4.2
+* Fedora 27 + GCC + clang (local), R 3.4.3
 * Ubuntu 14.04 + GCC (on travis-ci), R 3.3.3, 3.4.2, devel
 * win-builder, R devel
 

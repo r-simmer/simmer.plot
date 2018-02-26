@@ -16,7 +16,7 @@ Depends:
     simmer (>= 3.6.0),
     ggplot2 (>= 2.2.0)
 Imports:
-    DiagrammeR (>= 0.9.0),
+    DiagrammeR (>= 1.0.0),
     dplyr (>= 0.7.0),
     tidyr (>= 0.7.0),
     scales,

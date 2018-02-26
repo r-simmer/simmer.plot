@@ -1,3 +1,9 @@
+# simmer.plot 0.1.13
+
+## Minor changes and fixes
+
+* Update to DiagrammeR 1.0.0 (7c2b9c7).
+
 # simmer.plot 0.1.12
 
 ## New features
