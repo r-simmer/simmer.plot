@@ -40,7 +40,35 @@
 Returns a ggplot2 object.
 }
 \description{
-Methods for the \code{\link{plot}} generic.
+Methods for the \code{\link{plot}} generic. See below for details about each
+metric available.
+}
+\details{
+The S3 method for 'arrivals' provides three metrics: \code{"activity_time"},
+\code{"waiting_time"}, and \code{"flow_time"}. The \code{"activity_time"} is
+the amount of time spent in active state (i.e., in \code{timeout} activities),
+and it is already provided in the output of \code{get_mon_arrivals}. The
+\code{"flow_time"} is the amount of time spent in the system, and it is
+computed as follows: \code{flow = end_time - start_time}. Finally, the
+\code{"waiting_time"} is the amount of time spent waiting (e.g., in resources'
+queues, or due to a \code{wait} activity...), and it is computed as follows:
+\code{waiting_time = flow_time - activity_time}. This method does not apply
+any summary, but just shows a line plot of the values throughout the simulation.
+
+The S3 method for 'attributes' does not support any metric. It simply
+shows a stairstep graph of the values throughout the simulation for the keys
+provided (or all the collected attributes if no key is provided).
+
+The S3 method for 'resources' provides two metrics: \code{"usage"}
+and \code{"utilization"}. The \code{"usage"} metric shows a line graph of
+the cumulative average resource usage throughout the simulation, for each
+resource, replication and item (by default, queue, server and system, which
+is the sum of queue and server). If \code{steps=TRUE}, a stairstep graph with
+the instantaneous values is provided instead. The \code{"utilization"} metric
+shows a bar plot of the average resource utilization (total time in use
+divided by the total simulation time). For multiple replications, the bar
+represents the median, and the error bars represent the quartiles. Thus, if
+a single replication is provided, the bar and the error bar coincide.
 }
 \examples{
 t0 <- trajectory("my trajectory") \%>\%

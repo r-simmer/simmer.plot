@@ -7,6 +7,18 @@ get_mon_arrivals <- function(...) {
 }
 
 #' @name plot.mon
+#'
+#' @details The S3 method for 'arrivals' provides three metrics: \code{"activity_time"},
+#' \code{"waiting_time"}, and \code{"flow_time"}. The \code{"activity_time"} is
+#' the amount of time spent in active state (i.e., in \code{timeout} activities),
+#' and it is already provided in the output of \code{get_mon_arrivals}. The
+#' \code{"flow_time"} is the amount of time spent in the system, and it is
+#' computed as follows: \code{flow = end_time - start_time}. Finally, the
+#' \code{"waiting_time"} is the amount of time spent waiting (e.g., in resources'
+#' queues, or due to a \code{wait} activity...), and it is computed as follows:
+#' \code{waiting_time = flow_time - activity_time}. This method does not apply
+#' any summary, but just shows a line plot of the values throughout the simulation.
+#'
 #' @export
 plot.arrivals <- function(x, metric=c("activity_time", "waiting_time", "flow_time"), ...) {
   metric <- match.arg(metric)

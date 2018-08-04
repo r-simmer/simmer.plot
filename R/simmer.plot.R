@@ -32,7 +32,8 @@ NULL
 
 #' Plot Methods for \code{simmer} Monitoring Statistics
 #'
-#' Methods for the \code{\link{plot}} generic.
+#' Methods for the \code{\link{plot}} generic. See below for details about each
+#' metric available.
 #'
 #' @param x a data frame of class \code{arrivals}/\code{attributes}/\code{resources}
 #' (see \code{\link{get_mon}}).

@@ -15,6 +15,18 @@ get_mon_resources <- function(...) {
 #'   \item{\code{steps}, for \code{plot.resources(metric="usage")}}{if \code{TRUE},
 #'   shows the instantaneous usage instead of the cumulative average.}
 #' }
+#'
+#' @details The S3 method for 'resources' provides two metrics: \code{"usage"}
+#' and \code{"utilization"}. The \code{"usage"} metric shows a line graph of
+#' the cumulative average resource usage throughout the simulation, for each
+#' resource, replication and item (by default, queue, server and system, which
+#' is the sum of queue and server). If \code{steps=TRUE}, a stairstep graph with
+#' the instantaneous values is provided instead. The \code{"utilization"} metric
+#' shows a bar plot of the average resource utilization (total time in use
+#' divided by the total simulation time). For multiple replications, the bar
+#' represents the median, and the error bars represent the quartiles. Thus, if
+#' a single replication is provided, the bar and the error bar coincide.
+#'
 #' @export
 plot.resources <- function(x, metric=c("usage", "utilization"), names, ...) {
   metric <- match.arg(metric)

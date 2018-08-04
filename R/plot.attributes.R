@@ -8,10 +8,17 @@ get_mon_attributes <- function(...) {
 
 #' @name plot.mon
 #' @param keys attributes to plot (if left empty, all attributes are shown).
+#'
+#' @details The S3 method for 'attributes' does not support any metric. It simply
+#' shows a stairstep graph of the values throughout the simulation for the keys
+#' provided (or all the collected attributes if no key is provided).
+#'
 #' @export
 plot.attributes <- function(x, metric=NULL, keys, ...) {
-  if (!missing(keys))
-    x <- dplyr::filter(x, .data$key %in% keys)
+  if (!missing(keys)) x <- x %>%
+      dplyr::filter(.data$key %in% keys) %>%
+      dplyr::mutate(key = factor(.data$key, levels = keys))
+
   if (nrow(x) == 0)
     stop("no data available or 'keys' not found")
 
