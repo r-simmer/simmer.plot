@@ -55,3 +55,21 @@ test_that("multiple replication plots", {
   expect_is(plot(resources, "utilization", "nurse"), "ggplot")
   expect_is(plot(resources, "utilization", c("nurse", "doctor", "administration")), "ggplot")
 })
+
+test_that("resources and items are filtered and plotted in the specified order", {
+  resources <- simmer() %>%
+    add_resource("nurse", 1) %>%
+    add_resource("doctor", 2) %>%
+    add_resource("administration", 1) %>%
+    add_generator("patient", t0, function() rnorm(1, 10, 2)) %>%
+    run(80) %>%
+    get_mon_resources()
+
+  fct <- c("nurse", "doctor")
+  p <- plot(resources, "utilization", fct)
+  expect_equal(levels(p$data$resource), fct)
+
+  fct <- c("system", "queue")
+  p <- plot(resources, metric="usage", "doctor", items = fct)
+  expect_equal(levels(p$data$item), fct)
+})
