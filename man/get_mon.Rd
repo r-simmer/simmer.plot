@@ -4,11 +4,8 @@
 \name{get_mon}
 \alias{get_mon}
 \alias{get_mon_arrivals}
-\alias{get_mon}
 \alias{get_mon_attributes}
-\alias{get_mon}
 \alias{get_mon_resources}
-\alias{get_mon}
 \title{Monitoring Statistics}
 \usage{
 get_mon_arrivals(...)

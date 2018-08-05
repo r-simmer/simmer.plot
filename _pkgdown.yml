@@ -18,9 +18,8 @@ reference:
 navbar:
   title: simmer.plot
   left:
-  - text: "Home"
-    icon: fa-home
-    href: http://r-simmer.org
+  - icon: fa-home
+    href: ./
   - text: "Reference"
     icon: fa-gears
     href: reference/index.html
@@ -34,6 +33,13 @@ navbar:
   - text: "News"
     icon: fa-newspaper-o
     href: news/index.html
+  - text: "GitHub"
+    icon: fa-github
+    href: https://github.com/r-simmer/simmer.plot
+  right:
+  - text: "simmer"
+    icon: fa-coffee
+    href: http://r-simmer.org
   - text: "Extensions"
     icon: fa-puzzle-piece
     menu:
@@ -45,4 +51,3 @@ navbar:
         href: https://github.com/r-simmer/simmer.optim
       - text: "simmer.json"
         href: https://github.com/r-simmer/simmer.json
-

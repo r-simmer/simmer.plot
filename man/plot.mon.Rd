@@ -4,11 +4,8 @@
 \name{plot.mon}
 \alias{plot.mon}
 \alias{plot.arrivals}
-\alias{plot.mon}
 \alias{plot.attributes}
-\alias{plot.mon}
 \alias{plot.resources}
-\alias{plot.mon}
 \title{Plot Methods for \code{simmer} Monitoring Statistics}
 \usage{
 \method{plot}{arrivals}(x, metric = c("activity_time", "waiting_time",
@@ -16,7 +13,8 @@
 
 \method{plot}{attributes}(x, metric = NULL, keys, ...)
 
-\method{plot}{resources}(x, metric = c("usage", "utilization"), names, ...)
+\method{plot}{resources}(x, metric = c("usage", "utilization"), names,
+  ...)
 }
 \arguments{
 \item{x}{a data frame of class \code{arrivals}/\code{attributes}/\code{resources}
