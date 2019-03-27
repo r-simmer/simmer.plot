@@ -1,3 +1,7 @@
+# simmer.plot 0.1.16
+
+- Fix rollback pointer with an infinite amount (#18).
+
 # simmer.plot 0.1.15
 
 - Fix test for simmer v4.2.2.

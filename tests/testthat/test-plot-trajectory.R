@@ -34,9 +34,11 @@ test_that("a simple trajectory is correctly converted to graph", {
 test_that("a rollback with variable amount is correctly converted to graph", {
   test_graph(trajectory() %>% rollback(0), c("Rollback"), 1, 1)
   test_graph(trajectory() %>% rollback(1), c("Rollback"), 1, 1)
+  test_graph(trajectory() %>% rollback(Inf), c("Rollback"), 1, 1)
   test_graph(trajectory() %>% timeout(1) %>% rollback(0), c("Timeout", "Rollback"), c(1, 2), c(2, 2))
   test_graph(trajectory() %>% timeout(1) %>% rollback(1), c("Timeout", "Rollback"), c(1, 2), c(2, 1))
   test_graph(trajectory() %>% timeout(1) %>% rollback(2), c("Timeout", "Rollback"), c(1, 2), c(2, 1))
+  test_graph(trajectory() %>% timeout(1) %>% rollback(Inf), c("Timeout", "Rollback"), c(1, 2), c(2, 1))
 })
 
 test_that("a complex trajectory is correctly converted to graph", {

@@ -102,6 +102,7 @@ trajectory_graph <- function(x, fill, verbose=FALSE) {
   info <- sub(" \\}", "", out)
   info[rollbacks] <- sub("amount: ", "", info[rollbacks])
   amounts <- as.numeric(sub(" \\(.*", "", info[rollbacks]))
+  amounts <- replace(amounts, amounts < 0, Inf)
   info[rollbacks] <- sub(".*, ", "", info[rollbacks])
   resources <- sub("resource: ", "", info[c(seizes, releases)])
   resources <- sub(",* .*", "", resources)
@@ -123,11 +124,16 @@ trajectory_graph <- function(x, fill, verbose=FALSE) {
   suppressMessages({for (i in seq_along(amounts)) {
     from <- nodes[rollbacks[i],]$id
     graph <- DiagrammeR::select_nodes_by_id(graph, from)
-    try({
-      for (j in seq_len(amounts[i]))
-        graph <- DiagrammeR::trav_in(graph)
-    }, silent = TRUE)
+    indeg <- DiagrammeR::get_degree_in(graph)
     to <- as.numeric(DiagrammeR::get_selection(graph))
+    steps <- amounts[i]
+    try({
+      while (steps && indeg[indeg$id==to,]$indegree) {
+        graph <- DiagrammeR::trav_in(graph)
+        to <- as.numeric(DiagrammeR::get_selection(graph))
+        steps <- steps - 1
+      }
+    }, silent = TRUE)
     graph <- DiagrammeR::clear_selection(graph)
     r_edges <- rbind(r_edges, data.frame(from=from, to=to))
   }})
