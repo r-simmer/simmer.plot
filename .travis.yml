@@ -15,6 +15,7 @@ env:
     - _R_CHECK_CRAN_INCOMING_=FALSE
 
 r_github_packages:
+  - r-simmer/simmer
   - r-lib/covr
 
 after_success:
