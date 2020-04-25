@@ -1,14 +1,11 @@
 ## Patch release
 
-Fix a test for simmer v4.2.2.
-
-The maintainer's address has changed. It is the same account, just a different
-alias. I'm sending confirmation from the previous address to CRAN-submissions.
+Several bug fixes.
 
 ## Test environments
 
-* Fedora 29 + GCC + clang (local), R 3.5.2
-* Ubuntu 14.04 + GCC (on travis-ci), R 3.4.4, 3.5.2, devel
+* Fedora 31 + GCC + clang (local), R 3.6.3
+* Ubuntu 16.04 + GCC (on travis-ci), R 3.5.3, 3.6.3, devel
 * win-builder, R devel
 
 ## R CMD check results

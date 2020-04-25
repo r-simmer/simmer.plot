@@ -1,6 +1,8 @@
 # simmer.plot 0.1.16
 
 - Fix rollback pointer with an infinite amount (#18).
+- Workaround bug in DiagrammeR (#19).
+- Workaround bug in ggplot2 (#20).
 
 # simmer.plot 0.1.15
 
