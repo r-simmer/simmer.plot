@@ -22,6 +22,13 @@
 plot.trajectory <- function(x, engine="dot", fill=scales::brewer_pal("qual"), verbose=FALSE, ...) {
   stopifnot(length(x) > 0)
 
+  # this should be done by DiagrammeR
+  # see https://github.com/r-simmer/simmer.plot/issues/19
+  if (exists(".Random.seed", where=globalenv())) {
+    currentSeed <- get(".Random.seed", pos=globalenv())
+    on.exit(assign(".Random.seed", currentSeed, pos=globalenv()))
+  } else on.exit(rm(".Random.seed", pos=globalenv()))
+
   trajectory_graph(x, fill, verbose) %>%
     DiagrammeR::add_global_graph_attrs("layout", engine, "graph") %>%
     DiagrammeR::add_global_graph_attrs("fontname", "sans-serif", "node") %>%
