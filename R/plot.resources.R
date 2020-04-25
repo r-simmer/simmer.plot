@@ -89,7 +89,7 @@ plot.resources.utilization <- function(x) {
 
   ggplot(x) +
     aes_(x = ~resource, y = ~Q50, ymin = ~Q25, ymax = ~Q75) +
-    geom_bar(stat = "identity") +
+    geom_col() +
     geom_errorbar(width = .25, color = "black") +
     ggtitle("Resource utilization") +
     scale_y_continuous(labels = scales::percent, limits = c(0, 1), breaks = seq(0, 2, .2)) +
