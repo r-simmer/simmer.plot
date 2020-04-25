@@ -8,13 +8,11 @@
 \alias{plot.resources}
 \title{Plot Methods for \code{simmer} Monitoring Statistics}
 \usage{
-\method{plot}{arrivals}(x, metric = c("activity_time", "waiting_time",
-  "flow_time"), ...)
+\method{plot}{arrivals}(x, metric = c("activity_time", "waiting_time", "flow_time"), ...)
 
 \method{plot}{attributes}(x, metric = NULL, keys, ...)
 
-\method{plot}{resources}(x, metric = c("usage", "utilization"), names,
-  ...)
+\method{plot}{resources}(x, metric = c("usage", "utilization"), names, ...)
 }
 \arguments{
 \item{x}{a data frame of class \code{arrivals}/\code{attributes}/\code{resources}

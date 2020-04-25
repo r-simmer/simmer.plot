@@ -4,8 +4,7 @@
 \alias{plot.simmer}
 \title{Plot Method for \code{simmer} Objects}
 \usage{
-\method{plot}{simmer}(x, what = c("resources", "arrivals", "attributes"),
-  metric = NULL, ...)
+\method{plot}{simmer}(x, what = c("resources", "arrivals", "attributes"), metric = NULL, ...)
 }
 \arguments{
 \item{x}{a single simmer environment or a list of environments representing several replications.}
