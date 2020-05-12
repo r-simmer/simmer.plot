@@ -1,3 +1,8 @@
+# simmer.plot 0.1.16.9000
+
+- Fix calculation of resource utilization when zero capacity values are present
+  (#22 addressing #21).
+
 # simmer.plot 0.1.16
 
 - Fix rollback pointer with an infinite amount (#18).
