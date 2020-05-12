@@ -81,6 +81,7 @@ plot.resources.utilization <- function(x) {
   x <- x %>%
     dplyr::group_by(.data$resource, .data$replication) %>%
     dplyr::mutate(dt = .data$time - dplyr::lag(.data$time)) %>%
+    dplyr::mutate(capacity = ifelse(.data$capacity < .data$server, .data$server, .data$capacity)) %>%
     dplyr::mutate(in_use = .data$dt * dplyr::lag(.data$server / .data$capacity)) %>%
     dplyr::summarise(utilization = sum(.data$in_use, na.rm = TRUE) / sum(.data$dt, na.rm=TRUE)) %>%
     dplyr::summarise(Q25 = stats::quantile(.data$utilization, .25),
