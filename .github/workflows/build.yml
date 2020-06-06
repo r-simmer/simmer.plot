@@ -52,6 +52,7 @@ jobs:
 
     - name: Install dependencies
       run: |
+        remotes::install_github("r-simmer/simmer")
         remotes::install_deps(dependencies=TRUE)
         remotes::install_cran(c("rcmdcheck", "covr"))
       shell: Rscript {0}
