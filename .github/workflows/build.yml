@@ -58,8 +58,10 @@ jobs:
 
     - name: Check
       run: |
+        dir.create(".docs/extensions/plot", recursive=TRUE)
         rcmdcheck::rcmdcheck(args=c("--no-manual", "--as-cran"),
           error_on="warning", check_dir="check")
+        unlink(".docs/extensions")
       shell: Rscript {0}
 
     - name: Upload check results
