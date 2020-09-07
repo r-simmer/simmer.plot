@@ -26,6 +26,10 @@ jobs:
       _R_CHECK_CRAN_INCOMING_REMOTE_: false
 
     steps:
+    - name: Configure git
+      if: ${{ runner.os == 'Windows' }}
+      run: git config --global core.symlinks false
+
     - uses: actions/checkout@v2
     - uses: r-lib/actions/setup-r@master
       with:
@@ -59,10 +63,9 @@ jobs:
 
     - name: Check
       run: |
-        dir.create(".docs/extensions/plot", recursive=TRUE)
+        unlink("docs", force=TRUE)
         rcmdcheck::rcmdcheck(args=c("--no-manual", "--as-cran"),
           error_on="warning", check_dir="check")
-        unlink(".docs/extensions")
       shell: Rscript {0}
 
     - name: Upload check results
