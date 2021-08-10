@@ -64,7 +64,6 @@ jobs:
 
     - name: Check
       run: |
-        unlink("docs", force=TRUE)
         rcmdcheck::rcmdcheck(args=c("--no-manual", "--as-cran"),
           error_on="warning", check_dir="check")
       shell: Rscript {0}

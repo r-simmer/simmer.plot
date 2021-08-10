@@ -3,6 +3,8 @@ template:
     bootswatch: yeti
     ganalytics: UA-115358925-1
 
+destination: docs/extensions/plot
+
 reference:
   - title: "Plot simmer objects"
     desc: "S3 methods for simmer classes"
