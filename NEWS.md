@@ -2,6 +2,8 @@
 
 - Fix calculation of resource utilization when zero capacity values are present
   (#22 addressing #21; #24).
+- Expose `limits` in `plot.resources(metric="usage")`, improve documentation of
+  method-specific options (#25).
 
 # simmer.plot 0.1.16
 

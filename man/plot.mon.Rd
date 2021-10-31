@@ -12,7 +12,9 @@
 
 \method{plot}{attributes}(x, metric = NULL, keys, ...)
 
-\method{plot}{resources}(x, metric = c("usage", "utilization"), names, ...)
+\method{plot}{resources}(x, metric = c("usage", "utilization"), names,
+  items = c("queue", "server", "system"), steps = FALSE, limits = TRUE,
+  ...)
 }
 \arguments{
 \item{x}{a data frame of class \code{arrivals}/\code{attributes}/\code{resources}
@@ -20,17 +22,18 @@
 
 \item{metric}{specific metric to compute.}
 
-\item{...}{further arguments
-\describe{
-  \item{\code{items}, for \code{plot.resources(metric="usage")}}{components of
-  the resource to plot, one or more of \code{c("system", "queue", "server")}.}
-  \item{\code{steps}, for \code{plot.resources(metric="usage")}}{if \code{TRUE},
-  shows the instantaneous usage instead of the cumulative average.}
-}}
+\item{...}{unused.}
 
 \item{keys}{attributes to plot (if left empty, all attributes are shown).}
 
 \item{names}{resources to plot (if left empty, all resources are shown).}
+
+\item{items}{(\code{metric="usage"}) resource items to include in the chart.}
+
+\item{steps}{(\code{metric="usage"}) whether to show the instantaneous usage
+rather than the cumulative average.}
+
+\item{limits}{(\code{metric="usage"}) whether to show limits.}
 }
 \value{
 Returns a ggplot2 object.

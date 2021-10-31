@@ -8,13 +8,11 @@ get_mon_resources <- function(...) {
 
 #' @name plot.mon
 #' @param names resources to plot (if left empty, all resources are shown).
-#' @param ... further arguments
-#' \describe{
-#'   \item{\code{items}, for \code{plot.resources(metric="usage")}}{components of
-#'   the resource to plot, one or more of \code{c("system", "queue", "server")}.}
-#'   \item{\code{steps}, for \code{plot.resources(metric="usage")}}{if \code{TRUE},
-#'   shows the instantaneous usage instead of the cumulative average.}
-#' }
+#' @param items (\code{metric="usage"}) resource items to include in the chart.
+#' @param steps (\code{metric="usage"}) whether to show the instantaneous usage
+#' rather than the cumulative average.
+#' @param limits (\code{metric="usage"}) whether to show limits.
+#' @param ... unused.
 #'
 #' @details The S3 method for 'resources' provides two metrics: \code{"usage"}
 #' and \code{"utilization"}. The \code{"usage"} metric shows a line graph of
@@ -28,8 +26,17 @@ get_mon_resources <- function(...) {
 #' a single replication is provided, the bar and the error bar coincide.
 #'
 #' @export
-plot.resources <- function(x, metric=c("usage", "utilization"), names, ...) {
+plot.resources <- function(
+  x,
+  metric = c("usage", "utilization"),
+  names,
+  items = c("queue", "server", "system"),
+  steps = FALSE,
+  limits = TRUE,
+  ...
+) {
   metric <- match.arg(metric)
+  items <- match.arg(items, several.ok = TRUE)
 
   if (!missing(names)) x <- x %>%
     dplyr::filter(.data$resource %in% names) %>%
@@ -38,19 +45,11 @@ plot.resources <- function(x, metric=c("usage", "utilization"), names, ...) {
   if (nrow(x) == 0)
     stop("no data available or resource 'names' not found")
 
-  dispatch_next(metric, x, ...)
+  dispatch_next(metric, x, items, steps, limits, ...)
 }
 
-plot.resources.usage <- function(x, items=c("queue", "server", "system"), steps=FALSE) {
-  items <- match.arg(items, several.ok = TRUE)
-
-  limits <- x %>%
-    dplyr::mutate(server = .data$capacity, queue = .data$queue_size, system = .data$limit) %>%
-    tidyr::gather("item", "value", c("queue", "server", "system")) %>%
-    dplyr::filter(.data$item %in% items) %>%
-    dplyr::mutate(item = factor(.data$item, levels = items))
-
-  x <- x %>%
+plot.resources.usage <- function(x, items, steps, limits, ...) {
+  data <- x %>%
     tidyr::gather("item", "value", c("queue", "server", "system")) %>%
     dplyr::filter(.data$item %in% items) %>%
     dplyr::mutate(item = factor(.data$item, levels = items)) %>%
@@ -59,15 +58,25 @@ plot.resources.usage <- function(x, items=c("queue", "server", "system"), steps=
     dplyr::ungroup()
 
   plot_obj <-
-    ggplot(x, aes_(x = ~time, color = ~item)) +
+    ggplot(data, aes_(x = ~time, color = ~item)) +
     facet_grid(~resource) +
-    geom_step(aes_(y = ~value, group = ~interaction(replication, item)), limits, lty = 2) +
     ggtitle(paste("Resource usage")) +
     ylab("in use") +
     xlab("time") +
     expand_limits(y = 0)
 
-  if (steps == TRUE)
+  if (limits) {
+    limits <- x %>%
+      dplyr::mutate(server = .data$capacity, queue = .data$queue_size, system = .data$limit) %>%
+      tidyr::gather("item", "value", c("queue", "server", "system")) %>%
+      dplyr::filter(.data$item %in% items) %>%
+      dplyr::mutate(item = factor(.data$item, levels = items))
+
+    plot_obj <- plot_obj +
+      geom_step(aes_(y = ~value, group = ~interaction(replication, item)), limits, lty = 2)
+  }
+
+  if (steps)
     plot_obj <- plot_obj +
       geom_step(aes_(y = ~value, group = ~interaction(replication, item)), alpha = set_alpha(x))
   else
@@ -77,7 +86,7 @@ plot.resources.usage <- function(x, items=c("queue", "server", "system"), steps=
   plot_obj
 }
 
-plot.resources.utilization <- function(x) {
+plot.resources.utilization <- function(x, ...) {
   x <- x %>%
     dplyr::group_by(.data$resource, .data$replication) %>%
     dplyr::mutate(dt = dplyr::lead(.data$time) - .data$time) %>%
