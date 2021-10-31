@@ -80,9 +80,10 @@ plot.resources.usage <- function(x, items=c("queue", "server", "system"), steps=
 plot.resources.utilization <- function(x) {
   x <- x %>%
     dplyr::group_by(.data$resource, .data$replication) %>%
-    dplyr::mutate(dt = .data$time - dplyr::lag(.data$time)) %>%
+    dplyr::mutate(dt = dplyr::lead(.data$time) - .data$time) %>%
     dplyr::mutate(capacity = ifelse(.data$capacity < .data$server, .data$server, .data$capacity)) %>%
-    dplyr::mutate(in_use = .data$dt * dplyr::lag(.data$server / .data$capacity)) %>%
+    dplyr::mutate(dt = ifelse(.data$capacity > 0, .data$dt, 0)) %>%
+    dplyr::mutate(in_use = .data$dt * .data$server / .data$capacity) %>%
     dplyr::summarise(utilization = sum(.data$in_use, na.rm = TRUE) / sum(.data$dt, na.rm=TRUE)) %>%
     dplyr::summarise(Q25 = stats::quantile(.data$utilization, .25),
                      Q50 = stats::quantile(.data$utilization, .5),

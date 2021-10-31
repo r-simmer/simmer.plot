@@ -1,7 +1,7 @@
-# simmer.plot 0.1.16.9000
+# simmer.plot 0.1.17
 
 - Fix calculation of resource utilization when zero capacity values are present
-  (#22 addressing #21).
+  (#22 addressing #21; #24).
 
 # simmer.plot 0.1.16
 
