@@ -5,11 +5,11 @@
 [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/simmer.plot)](https://cran.r-project.org/package=simmer.plot)
 [![Downloads](https://cranlogs.r-pkg.org/badges/simmer.plot)](https://cran.rstudio.com/package=simmer.plot)
 
-**simmer.plot** provides plotting methods for [**simmer**](http://r-simmer.org), the Discrete-Event Simulation (DES) package for R.
+**simmer.plot** provides plotting methods for [**simmer**](https://r-simmer.org), the Discrete-Event Simulation (DES) package for R.
 
 ## Documentation
 
-Documentation is available at [r-simmer.org/extensions/plot/reference](http://r-simmer.org/extensions/plot/reference). To get started, please explore our [vignettes online](http://r-simmer.org/extensions/plot/articles/), or in R:
+Documentation is available at [r-simmer.org/extensions/plot/reference](https://r-simmer.org/extensions/plot/reference). To get started, please explore our [vignettes online](https://r-simmer.org/extensions/plot/articles/), or in R:
 
 ``` r
 vignette(package = "simmer.plot")

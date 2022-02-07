@@ -18,7 +18,7 @@ knitr::opts_chunk$set(collapse = TRUE, comment = "#>",
 
 ## Simulation example
 
-This is the basic example from [_Introduction to simmer_](http://r-simmer.org/articles/simmer-01-introduction.html). Please, refer to that vignette for further detail.
+This is the basic example from [_Introduction to simmer_](https://r-simmer.org/articles/simmer-01-introduction.html). Please, refer to that vignette for further detail.
 
 ```{r, message=FALSE}
 library(simmer)

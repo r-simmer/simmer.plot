@@ -1,6 +1,7 @@
-## Patch release
+## Patch release (resubmission)
 
-Several bug fixes.
+- Fixed NOTEs about http URLs.
+- Several bug fixes.
 
 ## Test environments
 

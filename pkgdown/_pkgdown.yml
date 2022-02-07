@@ -41,7 +41,7 @@ navbar:
   right:
   - text: "simmer"
     icon: fa-coffee
-    href: http://r-simmer.org
+    href: https://r-simmer.org
   - text: "Extensions"
     icon: fa-puzzle-piece
     menu:
