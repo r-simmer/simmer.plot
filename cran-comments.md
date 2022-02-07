@@ -4,8 +4,8 @@ Several bug fixes.
 
 ## Test environments
 
-* Fedora 31 + GCC + clang (local), R 3.6.3
-* Ubuntu 16.04 + GCC (on travis-ci), R 3.5.3, 3.6.3, devel
+* Fedora 35 + GCC (local), R 4.1.2
+* macOS-latest, windows-latest, ubuntu-latest (on GA), R devel, release, oldrel
 * win-builder, R devel
 
 ## R CMD check results
@@ -14,4 +14,4 @@ There were no ERRORs, WARNINGs or NOTEs.
 
 ## Downstream dependencies
 
-There is one downstream dependency, simmer, for which I'm the maintainer too.
+No issues expected.
