@@ -35,8 +35,8 @@ plot.arrivals <- function(x, metric=c("activity_time", "waiting_time", "flow_tim
 
 plot.arrivals.activity_time <- function(x) {
   ggplot(x) +
-    aes_(x = ~end_time, y = ~activity_time) +
-    geom_line(aes_(group = ~replication), alpha = set_alpha(x)) +
+    aes(x = .data$end_time, y = .data$activity_time) +
+    geom_line(aes(group = .data$replication), alpha = set_alpha(x)) +
     stat_smooth() +
     xlab("simulation time") +
     ylab("activity time") +
@@ -46,8 +46,8 @@ plot.arrivals.activity_time <- function(x) {
 
 plot.arrivals.waiting_time <- function(x) {
   ggplot(x) +
-    aes_(x = ~end_time, y = ~waiting_time) +
-    geom_line(aes_(group = ~replication), alpha = set_alpha(x)) +
+    aes(x = .data$end_time, y = .data$waiting_time) +
+    geom_line(aes(group = .data$replication), alpha = set_alpha(x)) +
     stat_smooth() +
     xlab("simulation time") +
     ylab("waiting time") +
@@ -57,8 +57,8 @@ plot.arrivals.waiting_time <- function(x) {
 
 plot.arrivals.flow_time <- function(x) {
   ggplot(x) +
-    aes_(x = ~end_time, y = ~flow_time) +
-    geom_line(aes_(group = ~replication), alpha = set_alpha(x)) +
+    aes(x = .data$end_time, y = .data$flow_time) +
+    geom_line(aes(group = .data$replication), alpha = set_alpha(x)) +
     stat_smooth() +
     xlab("simulation time") +
     ylab("flow time") +

@@ -58,7 +58,7 @@ plot.resources.usage <- function(x, items, steps, limits, ...) {
     dplyr::ungroup()
 
   plot_obj <-
-    ggplot(data, aes_(x = ~time, color = ~item)) +
+    ggplot(data, aes(x = .data$time, color = .data$item)) +
     facet_grid(~resource) +
     ggtitle(paste("Resource usage")) +
     ylab("in use") +
@@ -73,15 +73,21 @@ plot.resources.usage <- function(x, items, steps, limits, ...) {
       dplyr::mutate(item = factor(.data$item, levels = items))
 
     plot_obj <- plot_obj +
-      geom_step(aes_(y = ~value, group = ~interaction(replication, item)), limits, lty = 2)
+      geom_step(aes(y = .data$value,
+                    group = interaction(.data$replication, .data$item)),
+                limits, lty = 2)
   }
 
   if (steps)
     plot_obj <- plot_obj +
-      geom_step(aes_(y = ~value, group = ~interaction(replication, item)), alpha = set_alpha(x))
+      geom_step(aes(y = .data$value,
+                    group = interaction(.data$replication, .data$item)),
+                alpha = set_alpha(x))
   else
     plot_obj <- plot_obj +
-      geom_line(aes_(y = ~mean, group = ~interaction(replication, item)), alpha = set_alpha(x))
+      geom_line(aes(y = .data$mean,
+                    group = interaction(.data$replication, .data$item)),
+                alpha = set_alpha(x))
 
   plot_obj
 }
@@ -99,7 +105,7 @@ plot.resources.utilization <- function(x, ...) {
                      Q75 = stats::quantile(.data$utilization, .75))
 
   ggplot(x) +
-    aes_(x = ~resource, y = ~Q50, ymin = ~Q25, ymax = ~Q75) +
+    aes(x = .data$resource, y = .data$Q50, ymin = .data$Q25, ymax = .data$Q75) +
     geom_col() +
     geom_errorbar(width = .25, color = "black") +
     ggtitle("Resource utilization") +

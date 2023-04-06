@@ -24,8 +24,8 @@ plot.attributes <- function(x, metric=NULL, keys, ...) {
 
   plot_obj <-
     ggplot(x) +
-    aes_(x = ~time, y = ~value) +
-    geom_step(aes_(group = ~replication), alpha = set_alpha(x)) +
+    aes(x = .data$time, y = .data$value) +
+    geom_step(aes(group = .data$replication), alpha = set_alpha(x)) +
     stat_smooth() +
     xlab("simulation time") +
     ylab("value") +
