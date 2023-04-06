@@ -107,9 +107,10 @@ trajectory_graph <- function(x, fill, verbose=FALSE) {
   # additional info & rollbacks & resources
   out <- sub(".* -> .* +\\| ", "", out)
   info <- sub(" \\}", "", out)
-  info[rollbacks] <- sub("amount: ", "", info[rollbacks])
-  amounts <- as.numeric(sub(" \\(.*", "", info[rollbacks]))
-  amounts <- replace(amounts, amounts < 0, Inf)
+  info[rollbacks] <- if (packageVersion("simmer") > "4.4.5")
+    sub("target: ", "", info[rollbacks]) else sub("amount: ", "", info[rollbacks])
+  targets <- as.numeric(sub(" \\(.*", "", info[rollbacks]))
+  targets <- replace(targets, targets < 0, Inf)
   info[rollbacks] <- sub(".*, ", "", info[rollbacks])
   resources <- sub("resource: ", "", info[c(seizes, releases)])
   resources <- sub(",* .*", "", resources)
@@ -128,12 +129,12 @@ trajectory_graph <- function(x, fill, verbose=FALSE) {
   # resolve rollbacks from back connections
   r_edges <- NULL
   graph <- DiagrammeR::create_graph(nodes, b_edges)
-  suppressMessages({for (i in seq_along(amounts)) {
+  suppressMessages({for (i in seq_along(targets)) {
     from <- nodes[rollbacks[i],]$id
     graph <- DiagrammeR::select_nodes_by_id(graph, from)
     indeg <- DiagrammeR::get_degree_in(graph)
     to <- as.numeric(DiagrammeR::get_selection(graph))
-    steps <- amounts[i]
+    steps <- targets[i]
     try({
       while (steps && indeg[indeg$id==to,]$indegree) {
         graph <- DiagrammeR::trav_in(graph)

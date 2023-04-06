@@ -1,3 +1,7 @@
+# simmer.plot 0.1.17.1
+
+- Fix rollback parsing for simmer > 4.4.5.
+
 # simmer.plot 0.1.17
 
 - Fix calculation of resource utilization when zero capacity values are present
