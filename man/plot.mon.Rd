@@ -8,7 +8,8 @@
 \alias{plot.resources}
 \title{Plot Methods for \code{simmer} Monitoring Statistics}
 \usage{
-\method{plot}{arrivals}(x, metric = c("activity_time", "waiting_time", "flow_time"), ...)
+\method{plot}{arrivals}(x, metric = c("activity_time", "waiting_time",
+  "flow_time"), ...)
 
 \method{plot}{attributes}(x, metric = NULL, keys, ...)
 
