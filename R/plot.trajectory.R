@@ -107,7 +107,7 @@ trajectory_graph <- function(x, fill, verbose=FALSE) {
   # additional info & rollbacks & resources
   out <- sub(".* -> .* +\\| ", "", out)
   info <- sub(" \\}", "", out)
-  info[rollbacks] <- if (packageVersion("simmer") > "4.4.5")
+  info[rollbacks] <- if (utils::packageVersion("simmer") > "4.4.5")
     sub("target: ", "", info[rollbacks]) else sub("amount: ", "", info[rollbacks])
   targets <- as.numeric(sub(" \\(.*", "", info[rollbacks]))
   targets <- replace(targets, targets < 0, Inf)
