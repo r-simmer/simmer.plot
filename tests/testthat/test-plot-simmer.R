@@ -1,5 +1,3 @@
-context("plot.simmer")
-
 test_that("S3 plot.simmer works as expected", {
   expect_error(plot(simmer(), "asdf"),
                ".*should be one of .*resources.*, .*arrivals.*, .*attributes.*")

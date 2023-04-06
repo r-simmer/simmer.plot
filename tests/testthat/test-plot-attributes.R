@@ -1,5 +1,3 @@
-context("plot.attributes")
-
 test_that("errors are issued", {
   attributes <- get_mon_attributes(simmer())
   expect_is(attributes, "data.frame")

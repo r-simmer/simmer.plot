@@ -1,5 +1,3 @@
-context("plot.resources")
-
 test_that("errors are issued", {
   resources <- get_mon_resources(simmer())
   expect_is(resources, "data.frame")

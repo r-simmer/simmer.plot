@@ -1,5 +1,3 @@
-context("plot.arrivals")
-
 test_that("errors are issued", {
   arrivals <- get_mon_arrivals(simmer())
   expect_is(arrivals, "data.frame")

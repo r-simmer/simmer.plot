@@ -1,5 +1,3 @@
-context("plot.trajectory")
-
 test_graph <- function(x, name, from, to) {
   expect_true(inherits(plot(x), "htmlwidget"))
   graph <- trajectory_graph(x, scales::brewer_pal("qual"))

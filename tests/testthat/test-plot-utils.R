@@ -1,5 +1,3 @@
-context("utils")
-
 test_that("the method dispatcher works as expected", {
   foo <<- function(x, y, z) UseMethod("foo")
   foo.bar <<- function(x, y, z) dispatch_next(y, x, z)
