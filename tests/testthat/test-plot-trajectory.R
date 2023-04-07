@@ -68,12 +68,12 @@ test_that("a complex trajectory is correctly converted to graph", {
   activities <- c("Seize", "Branch", "Clone", "Seize", "Timeout", "Release", "Trap",
                   "Timeout", "Timeout", "SetAttribute", "Seize", "Timeout", "Release",
                   "Release", "Rollback", "Synchronize", "Rollback", "Release")
-  from <- c(1, 2, 2, 2, 3, 3, 4, 5, 6, 7, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 17)
-  to <- c(2, 3, 10, 16, 4, 7, 5, 6, 16, 8, 9, 16, 11, 12, 13, 14, 15, 1, 17, 2, 18)
+  from <- c(1, 2, 2, 2, 3, 3, 3, 4, 5, 6, 7, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 17)
+  to <- c(2, 3, 10, 16, 4, 7, 16, 5, 6, 16, 8, 9, 16, 11, 12, 13, 14, 15, 1, 17, 2, 18)
 
   if (packageVersion("simmer") >= "4.2.2") {
     # connect the Timeout back to the Handler
-    pos <- 1:11
+    pos <- 1:12
     from <- c(from[pos], 8, from[-pos])
     to <- c(to[pos], 7, to[-pos])
   }
@@ -81,7 +81,7 @@ test_that("a complex trajectory is correctly converted to graph", {
   test_graph(x, activities, from, to)
 })
 
-test_that("edges are removed for ignored subtrajectories in Clone", {
+test_that("edges are NOT removed for ignored subtrajectories in Clone", {
   x <- trajectory() %>%
     clone(3,
           trajectory() %>% timeout(1),
@@ -100,6 +100,6 @@ test_that("edges are removed for ignored subtrajectories in Clone", {
   test_graph(x,
              c("Clone", "Timeout", "SetAttribute", "Clone", "Timeout", "SetAttribute",
                "Clone", "Timeout", "SetAttribute", "Clone", "Timeout", "SetAttribute", "Synchronize"),
-             c(1, 1, 1, 2, 3, 4, 4, 5, 6, 7, 8, 9, 11, 12),
-             c(2, 3, 4, 4, 4, 5, 6, 7, 7, 8, 10, 10, 13, 13))
+             c(1, 1, 1, 2, 3, 4, 4, 4, 5, 6, 7, 7, 7, 8, 9, 10, 10, 10, 11, 12),
+             c(2, 3, 4, 4, 4, 5, 6, 7, 7, 7, 8, 9, 10, 10, 10, 11, 12, 13, 13, 13))
 })

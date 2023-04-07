@@ -1,8 +1,10 @@
-# simmer.plot 0.1.17.2
+# simmer.plot 0.1.17.3
 
 - Fix rollback parsing for simmer > 4.4.5.
 - Fix test warnings due to deprecated features.
 - Remove deprecated methods `plot.simmer` and `plot.wrap`.
+- Clones are not postprocessed anymore to remove links to avoid issues when `n`
+  is specified as a function (#27).
 
 # simmer.plot 0.1.17
 
