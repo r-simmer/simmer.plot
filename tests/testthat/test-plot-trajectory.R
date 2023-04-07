@@ -39,6 +39,21 @@ test_that("a rollback with variable amount is correctly converted to graph", {
   test_graph(trajectory() %>% timeout(1) %>% rollback(Inf), c("Timeout", "Rollback"), c(1, 2), c(2, 1))
 })
 
+test_that("a rollback with tag is correctly converted to graph", {
+  skip_if(packageVersion("simmer") <= "4.4.5")
+
+  x <- trajectory() %>%
+    timeout(1, tag="foo") %>%
+    timeout(2, tag="foo") %>%
+    timeout(3) %>%
+    rollback("foo", tag="bar")
+
+  test_graph(x,
+             c("Timeout [foo]", "Timeout [foo]", "Timeout", "Rollback [bar]"),
+             c(1, 2, 3, 4),
+             c(2, 3, 4, 2))
+})
+
 test_that("a complex trajectory is correctly converted to graph", {
   x <- trajectory() %>%
     seize("res0", 1) %>%

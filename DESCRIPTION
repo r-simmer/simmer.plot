@@ -1,7 +1,7 @@
 Package: simmer.plot
 Type: Package
 Title: Plotting Methods for 'simmer'
-Version: 0.1.17.3
+Version: 0.1.17.4
 Authors@R: c(
     person("Iñaki", "Ucar", email="iucar@fedoraproject.org",
       role=c("aut", "cph", "cre"), comment=c(ORCID="0000-0001-6403-5550")),

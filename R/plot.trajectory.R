@@ -104,13 +104,19 @@ trajectory_graph <- function(x, fill, verbose=FALSE) {
   colnames(f_edges) <- c("from", "to")
   f_edges <- f_edges[f_edges$to != 0 & !is.na(f_edges$to),]
 
-  # additional info & rollbacks & resources
+  # tags
   out <- sub(".* -> .* +\\| ", "", out)
+  tags <- sub(" .*", "", out)
+  tags <- replace(tags, !grepl("^\\[.*\\]$", tags), NA)
+  nodes$label <- ifelse(!is.na(tags), paste(nodes$label, tags), nodes$label)
+  nodes$tag <- gsub("\\[|\\]", "", tags)
+
+  # additional info & rollbacks & resources
+  out <- sub("^\\[.*\\] ", "", out)
   info <- sub(" \\}", "", out)
   info[rollbacks] <- if (utils::packageVersion("simmer") > "4.4.5")
     sub("target: ", "", info[rollbacks]) else sub("amount: ", "", info[rollbacks])
-  targets <- as.numeric(sub(" \\(.*", "", info[rollbacks]))
-  targets <- replace(targets, targets < 0, Inf)
+  targets <- sub("( \\(.*\\))?,.*", "", info[rollbacks])
   info[rollbacks] <- sub(".*, ", "", info[rollbacks])
   resources <- sub("resource: ", "", info[c(seizes, releases)])
   resources <- sub(",* .*", "", resources)
@@ -134,12 +140,19 @@ trajectory_graph <- function(x, fill, verbose=FALSE) {
     graph <- DiagrammeR::select_nodes_by_id(graph, from)
     indeg <- DiagrammeR::get_degree_in(graph)
     to <- as.numeric(DiagrammeR::get_selection(graph))
-    steps <- targets[i]
+    steps <- tryCatch(as.numeric(targets[i]), warning=function(e) targets[i])
     try({
-      while (steps && indeg[indeg$id==to,]$indegree) {
+      found <- steps == 0
+      while (!found && indeg[indeg$id==to,]$indegree) {
         graph <- DiagrammeR::trav_in(graph)
         to <- as.numeric(DiagrammeR::get_selection(graph))
-        steps <- steps - 1
+        if (is.numeric(steps)) {
+          steps <- steps - 1
+          found <- steps == 0
+        } else {
+          tag <- DiagrammeR::get_node_attrs(graph, "tag", to)
+          found <- isTRUE(tag == steps)
+        }
       }
     }, silent = TRUE)
     graph <- DiagrammeR::clear_selection(graph)
