@@ -163,5 +163,24 @@ trajectory_graph <- function(x, fill, verbose=FALSE) {
     }
   } else edges <- NULL
 
-  DiagrammeR::create_graph(nodes, edges)
+  DiagrammeR::create_graph(nodes, edges) %>%
+    postprocess_clones()
+}
+
+postprocess_clones <- function(graph) {
+  clones <- dplyr::filter(graph$nodes_df, .data$type == "Clone")
+  for (i in seq_len(nrow(clones))) {
+    if (grepl("function", clones[i,]$tooltip)) next
+    n <- as.numeric(strsplit(clones[i,]$tooltip, "n: ", fixed=TRUE)[[1]][2])
+    id_clone <- clones[i,]$id
+    edges <- dplyr::filter(graph$edges_df, .data$from == id_clone)
+    if (n+1 <= nrow(edges))
+      graph <- DiagrammeR::delete_edge(graph, id=edges[1,]$id)
+    edges <- dplyr::filter(graph$edges_df, .data$from == id_clone)
+    while (n < nrow(edges)) {
+      graph <- DiagrammeR::delete_edge(graph, id=edges[nrow(edges),]$id)
+      edges <- dplyr::filter(graph$edges_df, .data$from == id_clone)
+    }
+  }
+  graph
 }
