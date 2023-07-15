@@ -1,4 +1,4 @@
-# simmer.plot 0.1.17.4
+# simmer.plot 0.1.18
 
 - Fix rollback parsing for simmer > 4.4.5.
 - Fix test warnings due to deprecated features.

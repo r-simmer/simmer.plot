@@ -2,9 +2,9 @@
 
 <!-- badges: start -->
 [![build](https://github.com/r-simmer/simmer.plot/actions/workflows/build.yml/badge.svg)](https://github.com/r-simmer/simmer.plot/actions/workflows/build.yml)
-[![Coverage Status](https://codecov.io/gh/r-simmer/simmer.plot/branch/master/graph/badge.svg)](https://codecov.io/gh/r-simmer/simmer.plot)
+[![Coverage Status](https://app.codecov.io/gh/r-simmer/simmer.plot/branch/master/graph/badge.svg)](https://app.codecov.io/gh/r-simmer/simmer.plot)
 [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/simmer.plot)](https://cran.r-project.org/package=simmer.plot)
-[![Downloads](https://cranlogs.r-pkg.org/badges/simmer.plot)](https://cran.rstudio.com/package=simmer.plot)
+[![Downloads](https://cranlogs.r-pkg.org/badges/simmer.plot)](https://cran.r-project.org/package=simmer.plot)
 <!-- badges: end -->
 
 **simmer.plot** provides plotting methods for [**simmer**](https://r-simmer.org), the Discrete-Event Simulation (DES) package for R.

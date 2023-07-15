@@ -1,11 +1,10 @@
-## Patch release (resubmission)
+## Patch release
 
-- Fixed NOTEs about http URLs.
-- Several bug fixes.
+- Several bug fixes and compatibility patches for incoming simmer 4.4.6.
 
 ## Test environments
 
-* Fedora 35 + GCC (local), R 4.1.2
+* Up-to-date local R installation on Fedora + gcc
 * macOS-latest, windows-latest, ubuntu-latest (on GA), R devel, release, oldrel
 * win-builder, R devel
 
