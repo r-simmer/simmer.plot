@@ -13,7 +13,6 @@ reference:
   - title: "Plot simmer objects"
     desc: "S3 methods for simmer classes"
     contents:
-      - plot.simmer
       - plot.trajectory
       - plot.mon
   - title: "Monitoring"
