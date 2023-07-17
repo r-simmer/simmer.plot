@@ -33,7 +33,7 @@ plot.arrivals <- function(x, metric=c("activity_time", "waiting_time", "flow_tim
   dispatch_next(metric, x)
 }
 
-plot.arrivals.activity_time <- function(x) {
+plot.arrivals.activity_time <- function(x, ...) {
   ggplot(x) +
     aes(x = .data$end_time, y = .data$activity_time) +
     geom_line(aes(group = .data$replication), alpha = set_alpha(x)) +
@@ -44,7 +44,7 @@ plot.arrivals.activity_time <- function(x) {
     expand_limits(y = 0)
 }
 
-plot.arrivals.waiting_time <- function(x) {
+plot.arrivals.waiting_time <- function(x, ...) {
   ggplot(x) +
     aes(x = .data$end_time, y = .data$waiting_time) +
     geom_line(aes(group = .data$replication), alpha = set_alpha(x)) +
@@ -55,7 +55,7 @@ plot.arrivals.waiting_time <- function(x) {
     expand_limits(y = 0)
 }
 
-plot.arrivals.flow_time <- function(x) {
+plot.arrivals.flow_time <- function(x, ...) {
   ggplot(x) +
     aes(x = .data$end_time, y = .data$flow_time) +
     geom_line(aes(group = .data$replication), alpha = set_alpha(x)) +
