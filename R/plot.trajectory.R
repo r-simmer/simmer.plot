@@ -3,10 +3,10 @@
 #' A method for the \code{\link{plot}} generic that plots a diagram of the given trajectory.
 #'
 #' @param x a simmer trajectory.
-#' @param engine a string specifying a layout engine (see \code{\link{grViz}}).
+#' @param engine a string specifying a layout engine (see \code{\link[DiagrammeR]{grViz}}).
 #' @param fill discrete color palette for resource identification.
 #' @param verbose show additional info directly in the labels.
-#' @param ... additional parameters for \code{\link{render_graph}}.
+#' @param ... additional parameters for \code{\link[DiagrammeR]{render_graph}}.
 #'
 #' @return Returns an \code{htmlwidget}.
 #' @export

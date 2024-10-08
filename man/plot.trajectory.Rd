@@ -10,13 +10,13 @@
 \arguments{
 \item{x}{a simmer trajectory.}
 
-\item{engine}{a string specifying a layout engine (see \code{\link{grViz}}).}
+\item{engine}{a string specifying a layout engine (see \code{\link[DiagrammeR]{grViz}}).}
 
 \item{fill}{discrete color palette for resource identification.}
 
 \item{verbose}{show additional info directly in the labels.}
 
-\item{...}{additional parameters for \code{\link{render_graph}}.}
+\item{...}{additional parameters for \code{\link[DiagrammeR]{render_graph}}.}
 }
 \value{
 Returns an \code{htmlwidget}.

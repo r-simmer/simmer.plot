@@ -7,12 +7,11 @@
 #' @seealso \pkg{simmer}'s homepage \url{https://r-simmer.org} and
 #' GitHub repository \url{https://github.com/r-simmer/simmer.plot}.
 #'
-#' @docType package
 #' @name simmer.plot-package
 #'
 #' @import simmer ggplot2
 #' @importFrom graphics plot
-NULL
+"_PACKAGE"
 
 #' Monitoring Statistics
 #'

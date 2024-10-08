@@ -1,3 +1,7 @@
+# simmer.plot devel
+
+- Fix cross-references in documentation (#29).
+
 # simmer.plot 0.1.18
 
 - Fix rollback parsing for simmer > 4.4.5.

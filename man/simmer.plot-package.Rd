@@ -2,6 +2,7 @@
 % Please edit documentation in R/simmer.plot.R
 \docType{package}
 \name{simmer.plot-package}
+\alias{simmer.plot}
 \alias{simmer.plot-package}
 \title{\pkg{simmer.plot}: Plotting Methods for \pkg{simmer}}
 \description{
