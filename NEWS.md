@@ -1,4 +1,4 @@
-# simmer.plot devel
+# simmer.plot 0.1.19
 
 - Fix cross-references in documentation (#29).
 

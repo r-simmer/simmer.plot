@@ -1,10 +1,9 @@
 ## Patch release
 
-- Several bug fixes and compatibility patches for incoming simmer 4.4.6.
+- Fixes CRAN issues.
 
 ## Test environments
 
-* Up-to-date local R installation on Fedora + gcc
 * macOS-latest, windows-latest, ubuntu-latest (on GA), R devel, release, oldrel
 * win-builder, R devel
 
